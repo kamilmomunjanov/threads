@@ -1,20 +1,16 @@
 import React from 'react';
-import styles from "./Register.module.css";
+import styles from "./NewPassword.module.css";
 import Logo from "../../images/svg/Pattern.svg";
 import eye from "../../images/svg/eyeoff.svg";
-import google from "../../images/svg/google.svg";
-import apple from "../../images/svg/apple.svg";
 
-const Register = () => {
+const NewPassword = () => {
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
             <div>
-                <h1 className={styles.title}>Create an account</h1>
-                <p className={styles.subtitle}>Create account to start using Threads</p>
+                <h1 className={styles.title}>Create new password</h1>
+                <p className={styles.subtitle}>Your new password must be different from previous used passwords</p>
                 <form className={styles.form}>
-                    <input className={styles.email} type="text" placeholder="Your email "/>
-                    <input className={styles.name} type="text" placeholder="Your name "/>
                     <div className={styles.passwordEye}>
                         <input className={styles.password} type="text" placeholder="Password"/>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
@@ -23,11 +19,11 @@ const Register = () => {
                         <input className={styles.password} type="text" placeholder="Confirm password"/>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
                     </div>
-                    <button className={styles.btn} type="submit">Create account</button>
+                    <button className={styles.btn} type="submit">Continue</button>
                 </form>
             </div>
         </div>
     );
 };
 
-export default Register;
+export default NewPassword;
