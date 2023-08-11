@@ -7690,6 +7690,11 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-pin-input-hook@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/react-pin-input-hook/-/react-pin-input-hook-1.0.9.tgz#f905f5e75da5f5ea8f11f97887861e9871317d87"
+  integrity sha512-BNOJEmhKWwLCFEpAom1Bi5mLut7XTqSjjBNVc4ganFMBUdxk1rsvqGJVmQ/dU3Lm+8/gXSbqY8issrkQ++15Kg==
+
 react-redux@^8.1.2:
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.1.2.tgz#9076bbc6b60f746659ad6d51cb05de9c5e1e9188"
