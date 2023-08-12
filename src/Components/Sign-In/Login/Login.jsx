@@ -13,9 +13,11 @@ const Login = () => {
                 <h1 className={styles.title}>Let’s sign you in</h1>
                 <p className={styles.subtitle}>We’ve missed you</p>
                 <form className={styles.form}>
-                    <input className={styles.email} type="text" placeholder="Your email "/>
+                    <input name="email" className={styles.email} type="email" placeholder="Your email "/>
+                    <label htmlFor="email" className={styles.label}>Your email</label>
                     <div className={styles.passwordEye}>
-                        <input className={styles.password} type="text" placeholder="Password"/>
+                        <input name="password" className={styles.password} type="text" placeholder="Password"/>
+                        <label htmlFor="password" className={styles.label}>Your password</label>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
                     </div>
                     <p className={styles.forgotPassword}>Forgot password ?</p>
