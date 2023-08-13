@@ -12,11 +12,11 @@ const NewPassword = () => {
                 <p className={styles.subtitle}>Your new password must be different from previous used passwords</p>
                 <form className={styles.form}>
                     <div className={styles.passwordEye}>
-                        <input className={styles.password} type="text" placeholder="Password"/>
+                        <input name="password" className={styles.password} type="text" placeholder="Password"/>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
                     </div>
                     <div className={styles.passwordEye}>
-                        <input className={styles.password} type="text" placeholder="Confirm password"/>
+                        <input name='password' className={styles.password} type="text" placeholder="Confirm password"/>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
                     </div>
                     <button className={styles.btn} type="submit">Continue</button>

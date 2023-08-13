@@ -52,13 +52,11 @@
 }
 
 .email:focus::placeholder{
-    font-style: italic;
     transform: translateY(-30px);
     transition: .1s;
 }
 
 .password:focus::placeholder{
-    font-style: italic;
     transform: translateY(-30px);
     transition: .1s;
 }
