@@ -7,6 +7,7 @@ import Register from "./Components/Sign-Up/Register/Register";
 import NewPassword from "./Components/Sign-In/NewPassword/NewPassword";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
 import ProfilePage from "./Components/Profile/ProfilePage/ProfilePage";
+import EditProfile from "./Components/Profile/EditProfile/EditProfile";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/register" element={<Register/>}/>
             <Route path="/login/password/verification/password" element={<NewPassword/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
+            <Route path="/profile/edit" element={<EditProfile/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>
