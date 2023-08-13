@@ -6,6 +6,7 @@ import VerificationOtp from "./Components/Sign-In/OTP-Verification/VerificationO
 import Register from "./Components/Sign-Up/Register/Register";
 import NewPassword from "./Components/Sign-In/NewPassword/NewPassword";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
+import ProfilePage from "./Components/Profile/ProfilePage/ProfilePage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/login/password/verification" element={<VerificationOtp/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/login/password/verification/password" element={<NewPassword/>}/>
+            <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>
