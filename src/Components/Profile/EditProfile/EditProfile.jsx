@@ -1,12 +1,14 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styles from "./EditProfile.module.css";
 import Layout from "../../Layout/Layout";
 import arrow from "../../images/svg/editProfile/Arrow.svg";
 import user from "../../images/png/user.png";
 import toggle from "../../images/png/Toggle.png";
+import ModalPage from "../modalPage/ModalPage";
 
 
-const EditProfile = () => {
+const EditProfile = ({modal, setModal}) => {
+
     return (
         <div className={styles.profilePage}>
             <Layout/>
@@ -16,7 +18,8 @@ const EditProfile = () => {
                     <p className={styles.subtitle}>Done</p>
                 </div>
                 <img className={styles.imgUser} src={user} alt="User"/>
-                <p className={styles.addPhoto}>Edit photo</p>
+                <p onClick={() => setModal(true)} className={styles.addPhoto}>Edit photo</p>
+                <ModalPage modal={modal} setModal={setModal}/>
                 <form className={styles.editCard}>
                     <div className={styles.username}>
                         <label className={styles.label} htmlFor="text">Username</label>

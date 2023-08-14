@@ -11,9 +11,11 @@ import comment from "../../images/svg/icons/Comment.svg";
 import repostIcon from "../../images/svg/icons/Repost.svg";
 import send from "../../images/svg/icons/Send.svg";
 import dot from "../../images/svg/icons/Text.svg";
+import ModalPage from "../modalPage/ModalPage";
 
 
-const ProfilePage = () => {
+const ProfilePage = ({modal, setModal}) => {
+
     return (
         <div className={styles.profilePage}>
             <Layout/>
@@ -34,7 +36,8 @@ const ProfilePage = () => {
                     </div>
                 <div className={styles.buttons}>
                     <button className={styles.btn}>Edit profile</button>
-                    <button className={styles.btn}>Share profile</button>
+                    <button onClick={() => setModal(true)} className={styles.btn}>Share profile</button>
+                    <ModalPage modal={modal} setModal={setModal}/>
                 </div>
                 <p className={styles.text}>Threads</p>
                 {/*<p className={styles.textNotPost}>You haven’t posted any threads yet.</p>*/}
@@ -51,7 +54,8 @@ const ProfilePage = () => {
                             <div className={styles.icons}>
                                 <img className={styles.icon} src={like} alt="Like"/>
                                 <img className={styles.icon} src={comment} alt="Comment"/>
-                                <img className={styles.icon} src={repostIcon} alt="Repost"/>
+                                <img onClick={() => setModal(true)} className={styles.icon} src={repostIcon} alt="Repost"/>
+                                <ModalPage modal={modal} setModal={setModal}/>
                                 <img className={styles.icon} src={send} alt="Send"/>
                             </div>
                             <p className={styles.bodyText}>87 likes</p>

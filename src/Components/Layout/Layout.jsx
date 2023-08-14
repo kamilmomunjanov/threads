@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styles from "./Layout.module.css";
 import logo from "../images/svg/profile/Vector.svg";
 import home from "../images/svg/profile/Home.svg";
@@ -8,8 +8,12 @@ import write from "../images/svg/profile/Write.svg";
 import like from "../images/svg/profile/like.svg";
 import profile from "../images/svg/profile/profile.svg";
 import content from "../images/svg/profile/content.svg";
+import ModalPage from "../Profile/modalPage/ModalPage";
+import LayoutModal from "./LayoutModal";
 
 const Layout = () => {
+    const [openModal, setOpenModal] = useState(false)
+
     return (
         <div className={styles.tabBar}>
             <div className={styles.positionFixed}>
@@ -38,7 +42,8 @@ const Layout = () => {
                 </div>
                 <div className={`${styles.tab__asideText} ${styles.content}`}>
                     <img src={content} alt="More"/>
-                    <p className={styles.tab__text}>More</p>
+                    <p onClick={() => setOpenModal(true)} className={styles.tab__text}>More</p>
+                    <LayoutModal modal={openModal} setModal={setOpenModal}/>
                 </div>
             </div>
         </div>

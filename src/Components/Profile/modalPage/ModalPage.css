@@ -1,0 +1,131 @@
+.modalMain{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9;
+    transition: .5s;
+}
+
+.modalMain.active{
+    opacity: 1;
+    pointer-events: all;
+    cursor: auto;
+}
+
+.modalMain__content{
+    padding: 44px 32px;
+    border-radius: 13px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 20px;
+    margin-left: 262px;
+    margin-top: 100px;
+    height: 100px;
+    width: 450px;
+    transform: scale(0.5);
+    transition: .5s all;
+}
+
+.logout{
+    width: 350px;
+    height: 220px;
+}
+
+.modalMain__content.active{
+    transform: scale(1);
+}
+
+.modal__image{
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+    width: 450px;
+}
+
+.modalImage{
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.modalImage__text{
+    font-family: SF Pro Display,sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 22px;
+    color: #141414;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.remove{
+    font-family: SF Pro Display, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 22px;
+    color: #FF453A;
+}
+
+.modal__repost{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+}
+
+.modalRepost{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.modal__LogOut{
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    margin: 0 auto;
+    cursor: auto;
+}
+
+.modalLogOut{
+    margin: 0 auto;
+}
+
+.btn{
+    background-color: #EFEFEF;
+    padding: 15px 15px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.img{
+    padding: 16px 10px;
+    background-color: #EFEFEF;
+}
+
+.modalLog__text{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.title{
+    font-family: SF Pro Display, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 22px;
+    color: black;
+}
