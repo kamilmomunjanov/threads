@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styles from "./ProfilePage.module.css";
 import Layout from "../../Layout/Layout";
 import next from "../../images/svg/profile/Next.svg";
@@ -10,11 +10,12 @@ import like from "../../images/svg/icons/Like.svg";
 import comment from "../../images/svg/icons/Comment.svg";
 import repostIcon from "../../images/svg/icons/Repost.svg";
 import send from "../../images/svg/icons/Send.svg";
-import dot from "../../images/svg/icons/Text.svg";
 import ModalPage from "../modalPage/ModalPage";
+import ProfileModal from "./ProfileModal";
 
 
 const ProfilePage = ({modal, setModal}) => {
+    const [modalPage, setModalPage] = useState(false)
 
     return (
         <div className={styles.profilePage}>
@@ -36,8 +37,8 @@ const ProfilePage = ({modal, setModal}) => {
                     </div>
                 <div className={styles.buttons}>
                     <button className={styles.btn}>Edit profile</button>
-                    <button onClick={() => setModal(true)} className={styles.btn}>Share profile</button>
-                    <ModalPage modal={modal} setModal={setModal}/>
+                    <button onClick={() => setModalPage(true)} className={styles.btn}>Share profile</button>
+                    <ProfileModal modal={modalPage} setModal={setModalPage}/>
                 </div>
                 <p className={styles.text}>Threads</p>
                 {/*<p className={styles.textNotPost}>You haven’t posted any threads yet.</p>*/}

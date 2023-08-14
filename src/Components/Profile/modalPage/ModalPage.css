@@ -129,3 +129,15 @@
     line-height: 22px;
     color: black;
 }
+
+.modal__share{
+    width: 100%;
+}
+
+.modalShare{
+    display: flex;
+    align-items: center;
+    background-color: #EFEFEF;
+    padding-left: 20px;
+    column-gap: 15px;
+}
