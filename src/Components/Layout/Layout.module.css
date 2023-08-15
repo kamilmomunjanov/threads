@@ -3,7 +3,7 @@
     width: 200px;
     background-color: white;
     border-right: 1px solid grey;
-    height: 100vh;
+    height: calc(100vh + 50vh);
 }
 
 .positionFixed{

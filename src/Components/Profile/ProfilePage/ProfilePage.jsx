@@ -12,10 +12,12 @@ import repostIcon from "../../images/svg/icons/Repost.svg";
 import send from "../../images/svg/icons/Send.svg";
 import ModalPage from "../modalPage/ModalPage";
 import ProfileModal from "./ProfileModal";
+import ModalListFollow from "./ProfileModaListFollow/ModalListFollow";
 
 
 const ProfilePage = ({modal, setModal}) => {
     const [modalPage, setModalPage] = useState(false)
+    const [modalFollow, setModalFollow] = useState(false)
 
     return (
         <div className={styles.profilePage}>
@@ -30,7 +32,8 @@ const ProfilePage = ({modal, setModal}) => {
                                     <a className={styles.threadsNet} target="_blank"
                                        href="https://www.threads.net/">threads.net</a>
                                 </p>
-                                <p className={styles.followers}>153K followers</p>
+                                <p onClick={() => setModalFollow(true)} className={styles.followers}>153K followers</p>
+                                <ModalListFollow modal={modalFollow} setModal={setModalFollow}/>
                             </div>
                         </div>
                         <img className={styles.nextPage} src={next} alt="Next page"/>
