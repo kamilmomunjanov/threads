@@ -13,9 +13,11 @@ import image from "../../images/png/img.png";
 import img from "../../images/png/Image.png";
 import styles from "./MainPage.module.css";
 import RightLayout from "../../Layout/RightLayout";
+import MainModal from "./Modal/MainModal";
 
 const MainPage = ({modal, setModal}) => {
     const [activeTab, setActiveTab] = useState(1)
+    const [readOnly, setReadOnly] = useState("Anyone can reply")
 
     return (
         <div className={styles.mainPage}>
@@ -55,7 +57,11 @@ const MainPage = ({modal, setModal}) => {
                             </label>
                             <input className={styles.input} id="image" type="file"/>
                         </div>
-                        <p className={styles.text}>Anyone can reply</p>
+                        <p className={styles.text} onClick={e => {
+                            e.stopPropagation()
+                            setModal(true)
+                        }}>{readOnly}</p>
+                        <MainModal read={readOnly} setRead={setReadOnly} modal={modal} setModal={setModal}/>
                     </div>
                 </div>
 
