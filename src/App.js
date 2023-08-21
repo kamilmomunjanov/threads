@@ -8,6 +8,7 @@ import NewPassword from "./Components/Sign-In/NewPassword/NewPassword";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
 import ProfilePage from "./Components/Profile/ProfilePage/ProfilePage";
 import EditProfile from "./Components/Profile/EditProfile/EditProfile";
+import MainPage from "./Components/Main/MainPage/MainPage";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/login/password/verification/password" element={<NewPassword/>}/>
             <Route path="/profile" element={<ProfilePage modal={modal} setModal={setModal}/>}/>
             <Route path="/profile/edit" element={<EditProfile modal={modal} setModal={setModal}/>}/>
+            <Route path="/home" element={<MainPage modal={modal} setModal={setModal}/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>

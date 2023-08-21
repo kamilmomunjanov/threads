@@ -1,0 +1,44 @@
+* {
+    font-family: SF Pro Display, sans-serif;
+    text-decoration: none;
+}
+
+.mainPage{
+    display: flex;
+    background-color: white;
+}
+
+.mainPage__right{
+    max-width: 640px;
+    width: 100%;
+    margin: 0 170px 0 120px;
+}
+
+.homeTitle{
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29px;
+    margin-bottom:0;
+}
+
+.sections{
+    display: flex;
+    width: 100%;
+    position: fixed;
+}
+
+.sectionsTitle{
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 22px;
+    width: 340px;
+    display: grid;
+    place-content: center;
+    padding: 20px 0;
+    cursor: pointer;
+
+}
+
+.sectionsTitle.active{
+    border-bottom: 3px solid black;
+}

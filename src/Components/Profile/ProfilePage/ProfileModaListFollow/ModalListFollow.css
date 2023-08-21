@@ -1,12 +1,12 @@
 
-*{
+* {
     font-family: SF Pro Display, sans-serif;
 }
 
-.modalFollow{
+.modalFollow {
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     position: fixed;
     top: 0;
     left: 0;
@@ -15,86 +15,112 @@
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    z-index:8;
+    z-index: 8;
     transition: .5s;
 }
 
-.modalFollow.active{
+.modalFollow.active {
     opacity: 1;
     pointer-events: all;
     cursor: auto;
 }
 
-.modalFollow__content{
-    padding: 100px 32px 44px;
+.modalFollow__content {
+    padding: 80px 32px 44px;
     border-radius: 13px;
     background-color: white;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     row-gap: 20px;
-    margin-left: 262px;
-    margin-top: 20px;
     height: 547px;
     width: 600px;
     transform: scale(0.5);
     transition: .5s all;
     position: relative;
+    overflow: auto;
 }
 
-.modalFollow__content.active{
-    transform: scale(1);
-}
 
-.closeIcon{
+.closeIcon {
     position: absolute;
     top: 40px;
     left: 60px;
     cursor: pointer;
 }
 
-.header{
+
+
+::-webkit-scrollbar {
+    width: 12px; /* ширина для вертикального скролла */
+    height: 12px; /* высота для горизонтального скролла */
+    background-color: transparent;
+}
+
+/* ползунок скроллбара */
+::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 9em;
+    box-shadow: inset 1px 1px 10px #f3faf7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999999;
+
+}
+
+
+
+
+.modalFollow__content.active {
+    transform: scale(1);
+}
+
+
+
+.header {
     display: flex;
     width: 100%;
     justify-content: space-around;
     cursor: pointer;
-    position: relative;
     padding-bottom: 10px;
+    position: relative;
+    border-bottom: 1px solid #D9D9D9;
 }
 
-.header::after{
-    content: "";
-    position: absolute;
-    height: 1px;
-    max-width: 600px;
-    width: 100%;
-    background-color: #D9D9D9;
-    bottom: 0;
-}
 
-.header__title{
+.header__title {
     font-size: 17px;
     font-weight: 600;
     line-height: 22px;
     color: #141414;
+}
+
+.followers.active, .following.active1, .pending.active2{
     position: relative;
 }
 
-.followers, .following, .pending{
-    position: relative;
-}
-
-.followers:hover::before, .following:hover::before, .pending:hover::before{
+.followers.active::before, .following.active1::before, .pending.active2::before{
     content: "";
     position: absolute;
-    height: 3px;
-    width: 182px;
-    background-color: black;
     bottom: -121%;
-    left: -79%;
+    right: -50%;
+    height: 3px;
+    width: 100%;
+    background-color: black;
 }
 
-.searchField{
+.followers.active::after, .following.active1::after, .pending.active2::after{
+    content: "";
+    position: absolute;
+    bottom: -121%;
+    left: -50%;
+    height: 3px;
+    width: 100%;
+    background-color: black;
+}
+
+
+.searchField {
     width: calc(100% - 40px);
     background-color: #EFEFEF;
     padding: 13px 20px;
@@ -102,9 +128,10 @@
     align-items: center;
     column-gap: 4px;
     border-radius: 12px;
+    margin-top: 20px;
 }
 
-.inputField{
+.inputField {
     font-size: 17px;
     font-weight: 400;
     line-height: 22px;
@@ -115,60 +142,71 @@
     width: 80%;
 }
 
-.searchImg{
+.searchImg {
     margin-top: -3px;
     cursor: pointer;
 }
 
-.form__btn{
+.form__btn {
     border: none;
     padding: 0;
 }
 
-.followers__list{
+.tabs__content {
+    display: none;
+}
+
+.tabs__content.active {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 40px);
+    padding: 0 20px;
+    row-gap: 20px;
+}
+
+.followers__list {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: calc(100% - 40px);
-    padding: 0 20px;
+
 }
 
-.user{
+.user {
     display: flex;
     align-items: center;
     column-gap: 15px;
 }
 
-.user__image{
+.user__image {
     cursor: pointer;
 }
 
-.user__info{
+.user__info {
     display: flex;
     flex-direction: column;
     row-gap: 6px;
 }
 
-.user__info-title, .user__info-subtitle{
+.user__info-title, .user__info-subtitle {
     margin: 0;
     cursor: pointer;
 }
 
-.user__info-title{
+.user__info-title {
     font-size: 16px;
     font-weight: 700;
     line-height: 18px;
     color: #141414;
 }
 
-.user__info-subtitle{
+.user__info-subtitle {
     font-size: 17px;
     font-weight: 400;
     line-height: 20px;
     color: #999999;
 }
 
-.followers__list-btn{
+.followers__list-btn {
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
@@ -181,7 +219,7 @@
     border: 1px solid #D9D9D9;
 }
 
-.follow{
+.follow {
     color: black;
 }
 
