@@ -9,6 +9,9 @@
 .positionFixed{
     display: flex;
     flex-direction: column;
+    width: 242px;
+    height: calc(100vh + 50vh);
+    border-right: 1px solid grey;
     row-gap: 30px;
     position: fixed;
 }
@@ -41,4 +44,66 @@
 
 .content{
     margin-top: 230px;
+}
+
+.aside{
+    max-width: 256px;
+    width: 100%;
+    padding-top: 120px;
+
+}
+
+.suggest{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user{
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.title{
+    margin-bottom: 2px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 17px;
+    color: #141414;
+}
+.subtitle{
+    margin-top: 2px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #999999;
+}
+
+.switch{
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 13px;
+    color: #3E95EF;
+}
+
+.suggested{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.btn{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #999999;
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 8px 20px;
+    cursor: pointer;
 }
