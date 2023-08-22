@@ -91,6 +91,10 @@
     width: 100%;
 }
 
+.modalRepost  .border{
+    border-bottom: 1px solid #999999;
+}
+
 .modal__LogOut{
     display: flex;
     flex-direction: column;
@@ -114,6 +118,10 @@
 .img{
     padding: 16px 10px;
     background-color: #EFEFEF;
+}
+
+.line{
+    border-bottom: 1px solid #999999;
 }
 
 .modalLog__text{

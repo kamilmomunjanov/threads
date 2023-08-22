@@ -15,8 +15,9 @@ import unknown from "../../../images/svg/main/unknown.svg";
 import man from "../../../images/png/Avatar.png";
 import repostIcon from "../../../images/svg/icons/Repost.svg";
 import ModalPage from "../../../Profile/modalPage/ModalPage";
+import CommentModal from "./CommentModal";
 
-const CommentPage = () => {
+const CommentPage = ({modal, setModal}) => {
     const navigate = useNavigate()
     return (
         <div className={styles.mainPage}>
@@ -46,7 +47,8 @@ const CommentPage = () => {
                             <div className={styles.activity}>
                                 <img className={styles.activityBtn} src={like} alt="like"/>
                                 <img className={styles.activityBtn} src={comment} alt="comment"/>
-                                <img className={styles.activityBtn} src={repost} alt="repost"/>
+                                <img onClick={() => setModal(true)} className={styles.activityBtn} src={repost} alt="repost"/>
+                                <CommentModal modal={modal} setModal={setModal}/>
                                 <img className={styles.activityBtn} src={send} alt="send"/>
                             </div>
                             <div className={styles.positionDot}>
