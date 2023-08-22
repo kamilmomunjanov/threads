@@ -1,6 +1,6 @@
 .modalMain{
-    height: 100vh;
-    width: 100vw;
+    height: 101vh;
+    width: 101vw;
     background-color: rgba(0,0,0,0.5);
     position: fixed;
     top: 0;
@@ -10,7 +10,7 @@
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    z-index: 9;
+    z-index: 7;
     transition: .5s;
 }
 
@@ -148,4 +148,36 @@
     background-color: #EFEFEF;
     padding-left: 20px;
     column-gap: 15px;
+}
+
+.modal__shares{
+    margin-top: -26px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+.modalShares{
+    display: flex;
+    align-items: center;
+    background-color: #EFEFEF;
+    padding-left: 20px;
+    column-gap: 15px;
+    border-radius: 12px;
+}
+
+.modalImages__text{
+    font-family: SF Pro Display,sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 18px;
+    color: #141414;
+    border: none;
+    background-color: transparent;
+    cursor: pointer
+}
+
+.block{
+    color: #FF453A;
 }

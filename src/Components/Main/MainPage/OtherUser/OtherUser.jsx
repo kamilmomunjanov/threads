@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styles from "./OtherUser.module.css";
 import Layout from "../../../Layout/Layout";
 import avatar from "../../../images/png/profilePhoto.png";
@@ -13,8 +13,11 @@ import dot from "../../../images/svg/main/dotshorizontal.svg";
 import ModalPage from "../../../Profile/modalPage/ModalPage";
 import send from "../../../images/svg/icons/Send.svg";
 import woman from "../../../images/png/AvatarGirl.png";
+import ProfileModal from "../../../Profile/ProfilePage/ProfileModal";
+import OtherProfileModal from "./OtherProfileModal";
 
 const OtherUser = ({modal, setModal}) => {
+    const [modalPage, setModalPage] = useState(false)
     return (
         <div className={styles.profilePage}>
             <Layout/>
@@ -34,7 +37,8 @@ const OtherUser = ({modal, setModal}) => {
                 </div>
                 <div className={styles.buttons}>
                     <button className={styles.btn}>Follow</button>
-                    <img className={styles.threeDot} src={dot} alt="dot"/>
+                    <img onClick={() => setModalPage(true)} className={styles.threeDot} src={dot} alt="dot"/>
+                    <OtherProfileModal modal={modalPage} setModal={setModalPage}/>
                 </div>
                 <p className={styles.text}>Threads</p>
                 {/*<p className={styles.textNotPost}>You haven’t posted any threads yet.</p>*/}
