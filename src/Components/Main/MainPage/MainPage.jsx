@@ -74,7 +74,9 @@ const MainPage = ({modal, setModal}) => {
                     </div>
                     <div className={styles.content}>
                         <div className={styles.contentTop}>
-                            <p className={styles.title}>sarcastic_us</p>
+                            <p className={styles.title} onClick={(e) => {
+                                e.stopPropagation()
+                                navigate("/home/other-user")}}>sarcastic_us</p>
                             <p className={styles.subtitle}>12h</p>
                         </div>
                         <div className={styles.contentBot}>

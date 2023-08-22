@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from "./ForgotPassword.module.css";
 import Logo from "../../images/svg/Pattern.svg";
+import {useNavigate} from "react-router-dom";
 
 const ForgotPassword = () => {
+    const navigate = useNavigate()
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
@@ -11,7 +13,7 @@ const ForgotPassword = () => {
                 <p className={styles.subtitle}>Enter your email address to reset password</p>
                 <form className={styles.form}>
                     <input className={styles.email} type="text" placeholder="Your email "/>
-                    <button className={styles.btn} type="submit">Continue</button>
+                    <button className={styles.btn} type="submit" onClick={() => navigate("/login/password/verification")}>Continue</button>
                 </form>
             </div>
         </div>

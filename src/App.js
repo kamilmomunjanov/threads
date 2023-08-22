@@ -10,6 +10,7 @@ import ProfilePage from "./Components/Profile/ProfilePage/ProfilePage";
 import EditProfile from "./Components/Profile/EditProfile/EditProfile";
 import MainPage from "./Components/Main/MainPage/MainPage";
 import CommentPage from "./Components/Main/MainPage/CommentPage/CommentPage";
+import OtherUser from "./Components/Main/MainPage/OtherUser/OtherUser";
 
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
             <Route path="/profile/edit" element={<EditProfile modal={modal} setModal={setModal}/>}/>
             <Route path="/home" element={<MainPage modal={modal} setModal={setModal}/>}/>
             <Route path="/home/comment" element={<CommentPage modal={modal} setModal={setModal}/>}/>
+            <Route path="/home/comment" element={<CommentPage modal={modal} setModal={setModal}/>}/>
+            <Route path="/home/other-user" element={<OtherUser modal={modal} setModal={setModal}/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>

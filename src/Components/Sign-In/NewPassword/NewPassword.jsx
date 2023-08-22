@@ -2,8 +2,10 @@ import React from 'react';
 import styles from "./NewPassword.module.css";
 import Logo from "../../images/svg/Pattern.svg";
 import eye from "../../images/svg/eyeoff.svg";
+import {useNavigate} from "react-router-dom";
 
 const NewPassword = () => {
+    const navigate = useNavigate()
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
@@ -19,7 +21,7 @@ const NewPassword = () => {
                         <input name='password' className={styles.password} type="text" placeholder="Confirm password"/>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
                     </div>
-                    <button className={styles.btn} type="submit">Continue</button>
+                    <button className={styles.btn} type="submit" onClick={() => navigate("/")}>Continue</button>
                 </form>
             </div>
         </div>

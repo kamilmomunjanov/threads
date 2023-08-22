@@ -2,10 +2,10 @@ import React from 'react';
 import styles from "./Register.module.css";
 import Logo from "../../images/svg/Pattern.svg";
 import eye from "../../images/svg/eyeoff.svg";
-import google from "../../images/svg/google.svg";
-import apple from "../../images/svg/apple.svg";
+import {useNavigate} from "react-router-dom";
 
 const Register = () => {
+    const navigate = useNavigate()
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
@@ -23,7 +23,7 @@ const Register = () => {
                         <input className={styles.password} type="text" placeholder="Confirm password"/>
                         <img className={styles.eye} src={eye} alt="EyeOff-Password"/>
                     </div>
-                    <button className={styles.btn} type="submit">Create account</button>
+                    <button className={styles.btn} type="submit" onClick={() => navigate("/")}>Create account</button>
                 </form>
             </div>
         </div>
