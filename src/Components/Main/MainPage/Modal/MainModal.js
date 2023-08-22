@@ -15,6 +15,7 @@ const MainModal = ({modal, setModal, read, setRead}) => {
                                 onClick={e => {
                                     e.stopPropagation()
                                     setRead("Anyone can reply")
+                                    setModal(false)
                                 }}>
                             Anyone
                         </button>
@@ -25,6 +26,7 @@ const MainModal = ({modal, setModal, read, setRead}) => {
                         <button type="button" className="modalFilter__text filter__btn" onClick={e => {
                             e.stopPropagation()
                             setRead("Those you follow can reply")
+                            setModal(false)
                         }}>
                             Profiles you follow
                         </button>
@@ -35,6 +37,7 @@ const MainModal = ({modal, setModal, read, setRead}) => {
                         <button type="button" className="modalFilter__text filter__btn" onClick={e => {
                             e.stopPropagation()
                             setRead("Those mentioned can answer.")
+                            setModal(false)
                         }}>
                             Mentioned only
                         </button>

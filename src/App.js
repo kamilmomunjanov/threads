@@ -9,6 +9,7 @@ import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
 import ProfilePage from "./Components/Profile/ProfilePage/ProfilePage";
 import EditProfile from "./Components/Profile/EditProfile/EditProfile";
 import MainPage from "./Components/Main/MainPage/MainPage";
+import CommentPage from "./Components/Main/MainPage/CommentPage/CommentPage";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage modal={modal} setModal={setModal}/>}/>
             <Route path="/profile/edit" element={<EditProfile modal={modal} setModal={setModal}/>}/>
             <Route path="/home" element={<MainPage modal={modal} setModal={setModal}/>}/>
+            <Route path="/home/comment" element={<CommentPage modal={modal} setModal={setModal}/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>

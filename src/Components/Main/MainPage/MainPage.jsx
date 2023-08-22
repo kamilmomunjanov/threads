@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useLocation, Link, useNavigate} from "react-router-dom";
 import avatar from "../../images/svg/main/avatar.svg"
 import media from "../../images/svg/main/Vector.svg"
 import Layout from "../../Layout/Layout";
@@ -18,6 +19,7 @@ import MainModal from "./Modal/MainModal";
 const MainPage = ({modal, setModal}) => {
     const [activeTab, setActiveTab] = useState(1)
     const [readOnly, setReadOnly] = useState("Anyone can reply")
+    const navigate = useNavigate()
 
     return (
         <div className={styles.mainPage}>
@@ -76,12 +78,12 @@ const MainPage = ({modal, setModal}) => {
                             <p className={styles.subtitle}>12h</p>
                         </div>
                         <div className={styles.contentBot}>
-                            <img style={{cursor:"pointer"}} src={image} alt="image"/>
+                            <img style={{cursor: "pointer"}} src={image} alt="image"/>
                             <div className={styles.activity}>
-                                <img className={styles.activityBtn} src={like} alt="like"/>
-                                <img className={styles.activityBtn} src={comment} alt="comment"/>
-                                <img className={styles.activityBtn} src={repost} alt="repost"/>
-                                <img className={styles.activityBtn} src={send} alt="send"/>
+                                <Link to="#"><img className={styles.activityBtn} src={like} alt="like"/></Link>
+                                <Link to="/home/comment"><img className={styles.activityBtn} src={comment} alt="comment"/></Link>
+                                <Link to="#"><img className={styles.activityBtn} src={repost} alt="repost"/></Link>
+                                <Link to="#"><img className={styles.activityBtn} src={send} alt="send"/></Link>
                             </div>
                             <div className={styles.positionDot}>
                                 <p className={styles.bodyText}>640 replies</p>
@@ -103,9 +105,10 @@ const MainPage = ({modal, setModal}) => {
                             <p className={styles.title}>iamnalimov</p>
                             <p className={styles.subtitle}>1m</p>
                         </div>
-                        <p className={styles.titleText}>Focusing is about saying no. Stay focused on what truly matters.</p>
+                        <p className={styles.titleText}>Focusing is about saying no. Stay focused on what truly
+                            matters.</p>
                         <div className={styles.contentBot}>
-                            <img style={{cursor:"pointer"}} src={img} alt="image"/>
+                            <img style={{cursor: "pointer"}} src={img} alt="image"/>
                             <div className={styles.activity}>
                                 <img className={styles.activityBtn} src={like} alt="like"/>
                                 <img className={styles.activityBtn} src={comment} alt="comment"/>
