@@ -7840,6 +7840,11 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
+redux-remember@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/redux-remember/-/redux-remember-4.0.1.tgz#fae416d140a9dccdf84285b957e7062934a337fb"
+  integrity sha512-mP/EWdBVKg0bJfe3srzofp5sNSmWBLjKX+JzJC7J+DBjbLaxTCsLXVq1fnE4rcHXb9Sz/4u5qZ040I/ZhKzjLw==
+
 redux-thunk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.4.2.tgz#b9d05d11994b99f7a91ea223e8b04cf0afa5ef3b"
