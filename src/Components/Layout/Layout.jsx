@@ -39,11 +39,11 @@ const Layout = () => {
                     <Link to="/home" className={aside ? `${styles.tab__text} ${styles.tab__none}` : `${styles.tab__text}`}>Write a threads</Link>
                 </div>
                 <div className={styles.tab__asideText}>
-                    <Link to="#"><img src={like} alt="Activity"/></Link>
-                    <Link to="#" className={aside ? `${styles.tab__text} ${styles.tab__none}` : `${styles.tab__text}`}>Activity</Link>
+                    <Link to="/home/activity"><img src={like} alt="Activity"/></Link>
+                    <Link to="/home/activity" className={aside ? `${styles.tab__text} ${styles.tab__none}` : `${styles.tab__text}`}>Activity</Link>
                 </div>
                 <div className={styles.tab__asideText}>
-                    <Link to="/profile"><img src={profile} alt="Activity"/></Link>
+                    <Link to="/profile"><img src={profile} alt="Profile"/></Link>
                     <Link to="/profile" className={aside ? `${styles.tab__text} ${styles.tab__none}` : `${styles.tab__text}`}>Profile</Link>
                 </div>
                 <div className={`${styles.tab__asideText} ${styles.content}`}>

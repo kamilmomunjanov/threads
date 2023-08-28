@@ -11,6 +11,7 @@ import EditProfile from "./Components/Profile/EditProfile/EditProfile";
 import MainPage from "./Components/Main/MainPage/MainPage";
 import CommentPage from "./Components/Main/MainPage/CommentPage/CommentPage";
 import OtherUser from "./Components/Main/MainPage/OtherUser/OtherUser";
+import Activity from "./Components/Activity/Activity";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/home/comment" element={<CommentPage modal={modal} setModal={setModal}/>}/>
             <Route path="/home/comment" element={<CommentPage modal={modal} setModal={setModal}/>}/>
             <Route path="/home/other-user" element={<OtherUser modal={modal} setModal={setModal}/>}/>
+            <Route path="/home/activity" element={<Activity modal={modal} setModal={setModal}/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>

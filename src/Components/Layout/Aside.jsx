@@ -1,6 +1,5 @@
 import React from 'react';
 import "./aside.css";
-import repost from "../images/svg/modal/Repost.svg";
 import styles from "./Layout.module.css";
 import ava from "../images/svg/main/avatar.svg";
 
