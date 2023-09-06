@@ -61,10 +61,10 @@
     transition: .1s;
 }
 
-.email:focus, .password:focus{
-    background-color: white;
-    border: 1px solid var(--primary);
-}
+/*.email:focus, .password:focus{*/
+/*    background-color: white;*/
+/*    border: 1px solid var(--primary);*/
+/*}*/
 
 .email:focus ~ .label{
     display: block;
@@ -76,17 +76,17 @@
     color: var(--primary);
 }
 
-.label{
-    font-size: 19px;
-    color: #8C8C8C;
-    line-height: 23px;
-    position: absolute;
-    top: -10px;
-    left: 15px;
-    background-color: white;
-    display: none;
-    padding: 0 6px 0 5px;
-}
+/*.label{*/
+/*    font-size: 19px;*/
+/*    color: #8C8C8C;*/
+/*    line-height: 23px;*/
+/*    position: absolute;*/
+/*    top: -10px;*/
+/*    left: 15px;*/
+/*    background-color: white;*/
+/*    display: none;*/
+/*    padding: 0 6px 0 5px;*/
+/*}*/
 
 
 
@@ -109,6 +109,23 @@
     position: absolute;
     right: 15px;
     cursor: pointer;
+}
+
+.form__label{
+    position: relative;
+}
+
+.register__labelErrorUser{
+    position: absolute;
+    top: -35px;
+    left: 10px;
+    color: #ff5b57;
+    font-size: 16px;
+    font-family: Gotham Pro, sans-serif;
+}
+
+.error{
+    background-color: #F8EEBA;
 }
 
 .btn{
