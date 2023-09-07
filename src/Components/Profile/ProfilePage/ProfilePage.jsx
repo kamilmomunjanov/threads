@@ -13,11 +13,13 @@ import send from "../../images/svg/icons/Send.svg";
 import ModalPage from "../modalPage/ModalPage";
 import ProfileModal from "./ProfileModal";
 import ModalListFollow from "./ProfileModaListFollow/ModalListFollow";
+import {useNavigate} from "react-router-dom";
 
 
 const ProfilePage = ({modal, setModal}) => {
     const [modalPage, setModalPage] = useState(false)
     const [modalFollow, setModalFollow] = useState(false)
+    const navigate = useNavigate()
 
     return (
         <div className={styles.profilePage}>
@@ -39,7 +41,7 @@ const ProfilePage = ({modal, setModal}) => {
                         <img className={styles.nextPage} src={next} alt="Next page"/>
                     </div>
                 <div className={styles.buttons}>
-                    <button className={styles.btn}>Edit profile</button>
+                    <button className={styles.btn} onClick={() => navigate("/profile/edit")}>Edit profile</button>
                     <button onClick={() => setModalPage(true)} className={styles.btn}>Share profile</button>
                     <ProfileModal modal={modalPage} setModal={setModalPage}/>
                 </div>

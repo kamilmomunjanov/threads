@@ -94,6 +94,9 @@
     outline: none;
     border: none;
     border-bottom: 1px solid #D9D9D9;
+    color: black;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .field::placeholder{
@@ -119,6 +122,21 @@
 
 .toggle{
     cursor: pointer;
+}
+
+
+
+.register__labelErrorUser{
+    position: absolute;
+    top: -35px;
+    left: 10px;
+    color: #ff5b57;
+    font-size: 16px;
+    font-family: Gotham Pro, sans-serif;
+}
+
+.error{
+    background-color: #F8EEBA;
 }
 
 

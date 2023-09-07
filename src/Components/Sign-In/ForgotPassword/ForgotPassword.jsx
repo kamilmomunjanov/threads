@@ -30,9 +30,11 @@ const ForgotPassword = () => {
     }
 
     const nextPage = () => {
-        // if (status === "done") {
-        //     navigate("/login/password/verification")
-        // }
+        if (status === "done") {
+            navigate("/login/password/verification")
+        }else{
+            alert("Введите верную почту")
+        }
     }
 
     return (

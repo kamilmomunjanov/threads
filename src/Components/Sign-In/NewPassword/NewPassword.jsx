@@ -42,6 +42,13 @@ const NewPassword = () => {
         dispatch(newPassword({password, passwordRepeat}))
     }
 
+    const nextPage = () => {
+        if (status === "done") {
+            navigate("/")
+        }else{
+            alert("Ошибка введённых значений")
+        }
+    }
 
 
     return (
@@ -86,7 +93,7 @@ const NewPassword = () => {
                             <img onClick={viewPassword} className={styles.eye} src={eye} alt="EyeOff-Password"/>
                         </div>
                     </label>
-                    <button className={styles.btn} type="submit" >Continue</button>
+                    <button onClick={nextPage} className={styles.btn} type="submit" >Continue</button>
                 </form>
             </div>
         </div>

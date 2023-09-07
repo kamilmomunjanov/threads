@@ -40,6 +40,14 @@ const Login = () => {
         dispatch(loginUser({username, password}))
     }
 
+    const nextPage = () => {
+        if (status === "done") {
+            navigate("/home")
+        }else{
+            alert("Неверный логин или пароль")
+        }
+    }
+
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
@@ -94,7 +102,7 @@ const Login = () => {
 
                     <p className={styles.forgotPassword} onClick={() => navigate("/login/password")}>Forgot password
                         ?</p>
-                    <button className={styles.btn} type="submit">Log in</button>
+                    <button onClick={nextPage} className={styles.btn} type="submit">Log in</button>
                 </form>
                 <p className={styles.text}>or</p>
                 <div className={styles.buttons}>

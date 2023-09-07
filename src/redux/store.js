@@ -3,6 +3,7 @@ import registerSlice from "./reducers/authSlice";
 import signInSlice from "./reducers/loginSlice";
 import forgotPasswordSlice from "./reducers/forgotPasswordSlice";
 import verificationSlice from "./reducers/verificationSlice";
+import profileSlice from "./reducers/profileSlice";
 import {rememberReducer, rememberEnhancer} from "redux-remember";
 
 
@@ -11,11 +12,12 @@ const rootReducer = combineReducers({
     signInSlice,
     forgotPasswordSlice,
     verificationSlice,
+    profileSlice,
 })
 
 const reducer = rememberReducer(rootReducer)
 
-const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice"]
+const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice"]
 
 
 const store = configureStore({

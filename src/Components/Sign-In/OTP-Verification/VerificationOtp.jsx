@@ -25,6 +25,14 @@ const VerificationOtp = () => {
         await setValues(["","","",""])
     }
 
+    const nextPage = () => {
+        if (status === "done") {
+            navigate("/login/password/verification/password")
+        }else{
+            alert("Введите верный код")
+        }
+    }
+
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
@@ -37,7 +45,7 @@ const VerificationOtp = () => {
                             <input key={index} className={styles.pinInputField} {...propsField} />
                         ))}
                     </div>
-                    <button className={styles.btn} type="submit">Verify</button>
+                    <button onClick={nextPage} className={styles.btn} type="submit">Verify</button>
                 </form>
             </div>
         </div>

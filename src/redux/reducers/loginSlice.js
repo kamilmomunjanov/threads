@@ -20,8 +20,9 @@ export const loginUser = createAsyncThunk(
                 throw new Error("Ошибка при запросе")
             }
 
-            window.localStorage.setItem("token", response.data.token.access)
-            window.localStorage.setItem("tokenRefresh", response.data.token.refresh)
+
+            window.localStorage.setItem("refreshToken", response.data.refresh)
+            window.localStorage.setItem("accessToken", response.data.access)
             return  response.data
 
         }catch (err) {
