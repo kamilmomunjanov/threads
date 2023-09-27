@@ -42,13 +42,13 @@ const Register = () => {
 
     password.current = watch("password")
 
-    const nextPage = () => {
-        if (status === 'done') {
-            return navigate("/")
-        }else{
-            alert("Не удалось зарегистрироваться")
-        }
-    }
+    // const nextPage = () => {
+    //     if (status === 'done') {
+    //         return navigate("/")
+    //     }else{
+    //         alert("Не удалось зарегистрироваться")
+    //     }
+    // }
 
 
     return (
@@ -139,7 +139,7 @@ const Register = () => {
                         </div>
                     </label>
 
-                    <button onClick={nextPage} className={styles.btn} type="submit">Create account</button>
+                    <button  className={styles.btn} type="submit">Create account</button>
                 </form>
             </div>
         </div>

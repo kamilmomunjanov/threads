@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Logo from "../../images/svg/Pattern.svg";
 import eye from "../../images/svg/eyeoff.svg";
 import google from "../../images/svg/google.svg";
@@ -39,14 +39,15 @@ const Login = () => {
         const password = data.password
         dispatch(loginUser({username, password}))
     }
-
-    const nextPage = () => {
+    useEffect(() => {
         if (status === "done") {
             navigate("/home")
-        }else{
-            alert("Неверный логин или пароль")
+        }else if (status === "error") {
+            alert("Такой логин не существует")
         }
-    }
+    },[status])
+
+
 
     return (
         <div className={styles.login}>
@@ -102,7 +103,7 @@ const Login = () => {
 
                     <p className={styles.forgotPassword} onClick={() => navigate("/login/password")}>Forgot password
                         ?</p>
-                    <button onClick={nextPage} className={styles.btn} type="submit">Log in</button>
+                    <button className={styles.btn} type="submit">Log in</button>
                 </form>
                 <p className={styles.text}>or</p>
                 <div className={styles.buttons}>

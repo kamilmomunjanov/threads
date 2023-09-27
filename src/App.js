@@ -12,6 +12,9 @@ import MainPage from "./Components/Main/MainPage/MainPage";
 import CommentPage from "./Components/Main/MainPage/CommentPage/CommentPage";
 import OtherUser from "./Components/Main/MainPage/OtherUser/OtherUser";
 import Activity from "./Components/Activity/Activity";
+import Main from "./Components/UI/Main";
+import IncorrectUsername from "./Components/UI/Kit/IncorrectUsername";
+import ForgottenPassword from "./Components/UI/Kit/ForgottenPassword";
 
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
     <div className="App">
         <Routes>
             <Route path="/" element={<Login/>}/>
+            <Route path="/main" element={<Main/>}/>
+            <Route path="/incorrect-username" element={<IncorrectUsername/>}/>
+            <Route path="/forgot-password" element={<ForgottenPassword/>}/>
             <Route path="/login/password" element={<ForgotPassword/>}/>
             <Route path="/login/password/verification" element={<VerificationOtp/>}/>
             <Route path="/register" element={<Register/>}/>

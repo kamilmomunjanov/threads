@@ -3,7 +3,6 @@ import instance from "../../config/axios.js";
 
 
 
-
 export const loginUser = createAsyncThunk(
     "login/loginUser",
     async ({username, password}, {rejectWithValue}) => {
@@ -90,6 +89,7 @@ const signInSlice = createSlice({
     reducers:{
         logoutUser: (state, action) => {
             state.data = null
+            state.status = ""
         }
     },
     extraReducers: (builder) => {

@@ -1,0 +1,63 @@
+body{
+    background-color: #D9D9D9;
+}
+
+.card{
+    display: grid;
+    place-content: center;
+}
+
+.incorrect{
+    display: grid;
+    place-content: center;
+    width: 240px;
+    height: 233px;
+    background-color: white;
+    border-radius: 16px;
+    padding: 0 20px 10px;
+    position: relative;
+}
+.incorrect::before{
+    content: "";
+    position: absolute;
+    height: 2px;
+    bottom: 55px;
+    width: 100%;
+    background-color: #D9D9D9;
+}
+
+.title{
+    font-family: SF Pro Display, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.subtitle{
+    font-family: SF Pro Display, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 20px;
+    color: #8C8C8C;
+    margin-bottom: 20px;
+
+}
+
+.btn{
+    margin-top: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: SF Pro Display, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #141414;
+}
+
+
+
+.forgot{
+    display: grid;
+    place-content: center;
+}
