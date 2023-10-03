@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import instance from "../../config/axios.js";
+import axios from "axios";
 
 
 export const profileUser = createAsyncThunk(
@@ -55,7 +56,7 @@ export const profileUpdate = createAsyncThunk(
             })
             console.log(response.data)
 
-            if (response.statusText !== "Created") {
+            if (response.statusText !== "OK") {
                 throw new Error("Ошибка при запросе")
             }
 

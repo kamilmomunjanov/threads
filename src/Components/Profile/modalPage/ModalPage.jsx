@@ -1,14 +1,39 @@
-import React,{useRef} from 'react';
+import React,{useRef, useEffect} from 'react';
 import addPhoto from "../../images/svg/modal/Picture.svg";
 import removePhoto from "../../images/svg/modal/RemovePicture.svg";
 import repost from "../../images/svg/modal/Repost.svg";
 import quote from "../../images/svg/modal/quote.svg";
 import "./ModalPage.css";
 import {useLocation} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {profilePhoto} from "../../../redux/reducers/photoProfile";
+import {profileUser} from "../../../redux/reducers/profileSlice";
 
 const ModalPage = ({modal, setModal}) => {
     const imageAddRef = useRef(null)
     const location = useLocation()
+    const dispatch = useDispatch()
+    const {_data, status, error} = useSelector((store) => store.photoProfile)
+
+
+
+    const submitAddPhoto = async (e) => {
+        e.stopPropagation()
+        imageAddRef.current.click()
+        console.log(imageAddRef.current.files[0])
+        try {
+            const formData = new FormData()
+            const file = imageAddRef.current.files[0]
+            formData.append('photo', file)
+            await dispatch(profilePhoto(formData))
+            await dispatch(profileUser())
+            setModal(false)
+        }catch (error) {
+            console.warn(error)
+            alert("Ошибка при загрузке файла")
+        }
+    }
+
 
     return (
         <div className={modal ? "modalMain active" : "modalMain"} onClick={()=>setModal(false)}>
@@ -42,10 +67,7 @@ const ModalPage = ({modal, setModal}) => {
                             location.pathname === "/profile/edit" &&
                             <div className="modalImage">
                                 <img src={addPhoto} alt=""/>
-                                <button type="button" onClick={(e) => {
-                                    e.stopPropagation()
-                                    imageAddRef.current.click()
-                                }} className="modalImage__text">New profile picture</button>
+                                <button type="button" onClick={submitAddPhoto} className="modalImage__text">New profile picture</button>
                                 <input ref={imageAddRef}  type="file" hidden/>
                             </div>
                         }

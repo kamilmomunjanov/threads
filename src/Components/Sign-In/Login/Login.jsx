@@ -49,6 +49,29 @@ const Login = () => {
 
 
 
+    // function handleCallbackResponse(response) {
+    //     console.log("Encoded JWT ID token: " + response.credential)
+    // }
+    //
+    // useEffect(() => {
+    //     /* global google */
+    //     google.accounts.id.initialize({
+    //         client_id: "53241340026-0409635helovf9i53a54lime8v32g659.apps.googleusercontent.com",
+    //         callback: handleCallbackResponse
+    //     })
+    //
+    //     google.accounts.id.renderButton(
+    //         document.getElementById("signInDiv"),
+    //     {theme: "outline", size: "large"}
+    //     )
+    // },[])
+
+    const signInGoogle = () => {
+
+    }
+
+
+
     return (
         <div className={styles.login}>
             <img src={Logo} alt="Logotype"/>
@@ -109,7 +132,7 @@ const Login = () => {
                 <div className={styles.buttons}>
                     <div className={styles.alternative}>
                         <img className={styles.logo} src={google} alt="Google-Icon"/>
-                        <button className={styles.google}>Login with Google</button>
+                        <button id="signInDiv" onClick={signInGoogle} className={styles.google}>Login with Google</button>
                     </div>
                     <div className={styles.alternative}>
                         <img className={styles.logo} src={apple} alt="Apple-Icon"/>

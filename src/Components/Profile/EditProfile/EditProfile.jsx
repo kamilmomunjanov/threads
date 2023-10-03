@@ -33,7 +33,7 @@ const EditProfile = ({modal, setModal}) => {
 
     useEffect(()=>{
         dispatch(profileUser())
-        console.log(_data.username)
+        console.log(_data.photo)
     },[])
 
     const handleSubmitProfileUpdate = async(data) => {
@@ -45,6 +45,7 @@ const EditProfile = ({modal, setModal}) => {
             const photo = null
             const bio = null
             const is_private = false
+
 
             await dispatch(profileUpdate({user,username,name,photo,bio,is_private}))
             await dispatch(profileUser())
@@ -67,7 +68,9 @@ const EditProfile = ({modal, setModal}) => {
                 </div>
 
                 <form noValidate onSubmit={handleSubmit(handleSubmitProfileUpdate)}>
-                    <img className={styles.imgUser} src={user} alt="User"/>
+                    {
+                       !_data.photo ? <img className={styles.imgUser} src={user} alt="User"/> : <img className={`${styles.imgUser} ${styles.imgUserUpdate}`} src={`${_data.photo}`} alt=""/>
+                    }
                     <p onClick={() => setModal(true)} className={styles.addPhoto}>Edit photo</p>
                     <ModalPage modal={modal} setModal={setModal}/>
                     <div className={styles.editCard}>
@@ -97,46 +100,22 @@ const EditProfile = ({modal, setModal}) => {
                                     value: /^[а-яА-ЯёЁa-zA-Z]+$/
                                 }
                             })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
-                                   type="text"   placeholder="+ Add name"/>
+                                   type="text" value={_data.name}   placeholder="+ Add name"/>
                         </div>
                     </label>
                     <label className={styles.label}>
                         <div className={styles.username}>
                             <span className={styles.label}>Bio</span>
-                            <input {...register("name", {
-                                required: {
-                                    message: "Имя пользователя обязательно к заполнению",
-                                    value: true
-                                },
-                                minLength: {
-                                    message: "Минимум 2 символа",
-                                    value: 2
-                                },
-                                pattern: {
-                                    message: "Напишите правильно свое имя пользователя",
-                                    value: /^[а-яА-ЯёЁa-zA-Z]+$/
-                                }
+                            <input {...register("bio", {
                             })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
-                                   type="text"   placeholder="+ Write bio"/>
+                                   type="text"  value={_data.bio}  placeholder="+ Write bio"/>
                         </div>
                     </label>
 
                     <label className={styles.label}>
                         <div className={styles.username}>
                             <span className={styles.label}>Link</span>
-                            <input {...register("name", {
-                                required: {
-                                    message: "Имя пользователя обязательно к заполнению",
-                                    value: true
-                                },
-                                minLength: {
-                                    message: "Минимум 2 символа",
-                                    value: 2
-                                },
-                                pattern: {
-                                    message: "Напишите правильно свое имя пользователя",
-                                    value: /^[а-яА-ЯёЁa-zA-Z]+$/
-                                }
+                            <input {...register("link", {
                             })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
                                    type="text"   placeholder="+ Add link"/>
                         </div>

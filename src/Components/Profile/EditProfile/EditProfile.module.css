@@ -45,6 +45,12 @@
     margin: 70px auto 20px;
 }
 
+.imgUserUpdate{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
 .addPhoto{
     font-size: 16px;
     font-weight: 700;

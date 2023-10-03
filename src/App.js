@@ -15,6 +15,7 @@ import Activity from "./Components/Activity/Activity";
 import Main from "./Components/UI/Main";
 import IncorrectUsername from "./Components/UI/Kit/IncorrectUsername";
 import ForgottenPassword from "./Components/UI/Kit/ForgottenPassword";
+import Example from "./Components/Abc/Example";
 
 
 function App() {
@@ -37,6 +38,9 @@ function App() {
             <Route path="/home/comment" element={<CommentPage modal={modal} setModal={setModal}/>}/>
             <Route path="/home/other-user" element={<OtherUser modal={modal} setModal={setModal}/>}/>
             <Route path="/home/activity" element={<Activity modal={modal} setModal={setModal}/>}/>
+            <Route path="/home/activity" element={<Activity modal={modal} setModal={setModal}/>}/>
+            <Route path="/example" element={<Example/>}/>
+
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </div>

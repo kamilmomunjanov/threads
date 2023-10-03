@@ -3,24 +3,20 @@ import instance from "../../config/axios.js";
 import axios from "axios";
 
 
-export const authUser = createAsyncThunk(
-    "auth/authUser",
-    async ({email, username, password, confirm_password,}, {rejectWithValue}) => {
+export const profilePhoto = createAsyncThunk(
+    "profile/profilePhoto",
+    async (formData, {rejectWithValue}) => {
         try {
-            const response = await instance.post("user/register/",{
-                email:email,
-                username:username,
-                password:password,
-                confirm_password:confirm_password,
+            const response = await instance.put("user/me/update-profile-photo/", formData,
+                {
+                headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
             })
-            console.log(response)
+            console.log(response.data)
 
-            if (response.statusText !== "Created") {
+            if (response.statusText !== "OK") {
                 throw new Error("Ошибка при запросе")
             }
 
-
-            // window.localStorage.setItem("access_token", response.data.token.access)
             return response.data
 
         }catch (err) {
@@ -30,8 +26,10 @@ export const authUser = createAsyncThunk(
 )
 
 
-const registerSlice = createSlice({
-    name:"auth",
+
+
+const photoSlice = createSlice({
+    name:"profile",
     initialState:{
         _data:null,
         status:"",
@@ -42,15 +40,15 @@ const registerSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(authUser.pending, (state) => {
+            .addCase(profilePhoto.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(authUser.fulfilled, (state, action) => {
+            .addCase(profilePhoto.fulfilled, (state, action) => {
                 state.status = "done"
                 state._data = action.payload
             })
-            .addCase(authUser.rejected, (state, action) => {
+            .addCase(profilePhoto.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
@@ -58,4 +56,4 @@ const registerSlice = createSlice({
 })
 
 
-export default  registerSlice.reducer;
+export default  photoSlice.reducer;
