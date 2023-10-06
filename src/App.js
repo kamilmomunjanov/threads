@@ -16,6 +16,7 @@ import Main from "./Components/UI/Main";
 import IncorrectUsername from "./Components/UI/Kit/IncorrectUsername";
 import ForgottenPassword from "./Components/UI/Kit/ForgottenPassword";
 import Example from "./Components/Abc/Example";
+import Google from "./Components/Abc/Google";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
             <Route path="/home/activity" element={<Activity modal={modal} setModal={setModal}/>}/>
             <Route path="/home/activity" element={<Activity modal={modal} setModal={setModal}/>}/>
             <Route path="/example" element={<Example/>}/>
+            <Route path="/google" element={<Google/>}/>
 
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>

@@ -38,7 +38,8 @@ const registerSlice = createSlice({
         error:"",
     },
     reducers:{
-        authPost:()=>{}
+        authPost:()=>{},
+
     },
     extraReducers: (builder) => {
         builder
@@ -56,6 +57,5 @@ const registerSlice = createSlice({
             })
     }
 })
-
 
 export default  registerSlice.reducer;

@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 
 const reducer = rememberReducer(rootReducer)
 
-const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice", "photoProfile"]
+const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice", ]
 
 
 const store = configureStore({

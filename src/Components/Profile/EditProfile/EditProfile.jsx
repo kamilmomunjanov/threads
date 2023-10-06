@@ -16,7 +16,7 @@ const EditProfile = ({modal, setModal}) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const {_data, status, error} = useSelector((store) => store.profileSlice)
-
+    const {_data:photoData} = useSelector((store) => store.photoProfile)
     const {
         register,
         handleSubmit,
@@ -27,10 +27,10 @@ const EditProfile = ({modal, setModal}) => {
         watch
     } = useForm({
         mode: "onChange",
-        value: _data,
-        defaultValue: _data
+        values: _data
     })
 
+    console.log(photoData)
     useEffect(()=>{
         dispatch(profileUser())
         console.log(_data.photo)
@@ -57,7 +57,7 @@ const EditProfile = ({modal, setModal}) => {
     }
 
 
-
+if (_data) {
     return (
         <div className={styles.profilePage}>
             <Layout/>
@@ -68,8 +68,9 @@ const EditProfile = ({modal, setModal}) => {
                 </div>
 
                 <form noValidate onSubmit={handleSubmit(handleSubmitProfileUpdate)}>
+
                     {
-                       !_data.photo ? <img className={styles.imgUser} src={user} alt="User"/> : <img className={`${styles.imgUser} ${styles.imgUserUpdate}`} src={`${_data.photo}`} alt=""/>
+                        _data.photo ? <img className={`${styles.imgUser} ${styles.imgUserUpdate}`} src={`${_data.photo}`} alt=""/> :<img className={styles.imgUser} src={user} alt="User"/>
                     }
                     <p onClick={() => setModal(true)} className={styles.addPhoto}>Edit photo</p>
                     <ModalPage modal={modal} setModal={setModal}/>
@@ -78,59 +79,61 @@ const EditProfile = ({modal, setModal}) => {
                         <label className={styles.label}>
                             <div className={styles.username}>
                                 <span className={styles.label}>Username</span>
-                            <input {...register("username", )} className={errors.username && errors.username?.message ? `${styles.input} ${styles.error}` : `${styles.input}`}
-                                   type="text"  value={_data.username}/>
+                                <input {...register("username", )} className={errors.username && errors.username?.message ? `${styles.input} ${styles.error}` : `${styles.input}`}
+                                       type="text" readOnly  />
+                            </div>
+                        </label>
+                        <button type='submit'>change</button>
+                        <label className={styles.label}>
+                            <div className={styles.username}>
+                                <span className={styles.label}>Name</span>
+                                <input {...register("name", {
+                                    required: {
+                                        message: "Имя пользователя обязательно к заполнению",
+                                        value: true
+                                    },
+                                    minLength: {
+                                        message: "Минимум 2 символа",
+                                        value: 2
+                                    },
+                                    pattern: {
+                                        message: "Напишите правильно свое имя пользователя",
+                                        value: /^[а-яА-ЯёЁa-zA-Z]+$/
+                                    }
+                                })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
+                                       type="text"    placeholder="+ Add name"/>
+                            </div>
+                        </label>
+                        <label className={styles.label}>
+                            <div className={styles.username}>
+                                <span className={styles.label}>Bio</span>
+                                <input {...register("bio", {
+                                })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
+                                       type="text"    placeholder="+ Write bio"/>
                             </div>
                         </label>
 
-                    <label className={styles.label}>
-                        <div className={styles.username}>
-                            <span className={styles.label}>Name</span>
-                            <input {...register("name", {
-                                required: {
-                                    message: "Имя пользователя обязательно к заполнению",
-                                    value: true
-                                },
-                                minLength: {
-                                    message: "Минимум 2 символа",
-                                    value: 2
-                                },
-                                pattern: {
-                                    message: "Напишите правильно свое имя пользователя",
-                                    value: /^[а-яА-ЯёЁa-zA-Z]+$/
-                                }
-                            })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
-                                   type="text" value={_data.name}   placeholder="+ Add name"/>
-                        </div>
-                    </label>
-                    <label className={styles.label}>
-                        <div className={styles.username}>
-                            <span className={styles.label}>Bio</span>
-                            <input {...register("bio", {
-                            })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
-                                   type="text"  value={_data.bio}  placeholder="+ Write bio"/>
-                        </div>
-                    </label>
-
-                    <label className={styles.label}>
-                        <div className={styles.username}>
-                            <span className={styles.label}>Link</span>
-                            <input {...register("link", {
-                            })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
-                                   type="text"   placeholder="+ Add link"/>
-                        </div>
-                    </label>
+                        <label className={styles.label}>
+                            <div className={styles.username}>
+                                <span className={styles.label}>Link</span>
+                                <input {...register("link", {
+                                })} className={errors.name && errors.name?.message ? `${styles.input} ${styles.field} ${styles.error}` : `${styles.input} ${styles.field}`}
+                                       type="text"   placeholder="+ Add link"/>
+                            </div>
+                        </label>
 
 
-                    <div className={styles.private}>
-                        <p className={styles.privateText}>Private profile</p>
-                        <img className={styles.toggle} src={toggle} alt="Toggle"/>
-                    </div>
+                        <div className={styles.private}>
+                            <p className={styles.privateText}>Private profile</p>
+                            <img className={styles.toggle} src={toggle} alt="Toggle"/>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     );
+}
+    return <h2>Loading...</h2>
 };
 
 export default EditProfile;

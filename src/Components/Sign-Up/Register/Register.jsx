@@ -10,9 +10,7 @@ import {authUser} from "../../../redux/reducers/authSlice";
 const Register = () => {
     const [passwordView, setPasswordView] = useState(false)
     const {data, status, error} = useSelector((store) => store.registerSlice)
-    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const location = useLocation()
     const password = useRef()
 
     const {

@@ -91,6 +91,9 @@ const signInSlice = createSlice({
         logoutUser: (state, action) => {
             state.data = null
             state.status = ""
+        },
+        loginUserGoogle : (state, action) => {
+            state.data= action.payload
         }
     },
     extraReducers: (builder) => {
@@ -136,5 +139,5 @@ const signInSlice = createSlice({
 
 
 
-export const {logoutUser} = signInSlice.actions;
+export const {logoutUser, loginUserGoogle} = signInSlice.actions;
 export default  signInSlice.reducer;

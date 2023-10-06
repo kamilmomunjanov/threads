@@ -8,6 +8,7 @@ import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {profilePhoto} from "../../../redux/reducers/photoProfile";
 import {profileUser} from "../../../redux/reducers/profileSlice";
+import instance from "../../../config/axios";
 
 const ModalPage = ({modal, setModal}) => {
     const imageAddRef = useRef(null)
@@ -17,22 +18,27 @@ const ModalPage = ({modal, setModal}) => {
 
 
 
+
     const submitAddPhoto = async (e) => {
         e.stopPropagation()
-        imageAddRef.current.click()
+
         console.log(imageAddRef.current.files[0])
         try {
             const formData = new FormData()
             const file = imageAddRef.current.files[0]
             formData.append('photo', file)
-            await dispatch(profilePhoto(formData))
-            await dispatch(profileUser())
+            // await dispatch(profilePhoto(formData))
+            instance.put("user/me/update-profile-photo/", formData,
+                {
+                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+                }).then((res) => dispatch(profileUser()) )
             setModal(false)
         }catch (error) {
             console.warn(error)
             alert("Ошибка при загрузке файла")
         }
     }
+
 
 
     return (
@@ -67,8 +73,8 @@ const ModalPage = ({modal, setModal}) => {
                             location.pathname === "/profile/edit" &&
                             <div className="modalImage">
                                 <img src={addPhoto} alt=""/>
-                                <button type="button" onClick={submitAddPhoto} className="modalImage__text">New profile picture</button>
-                                <input ref={imageAddRef}  type="file" hidden/>
+                                <button type="button" onClick={() => imageAddRef.current.click()} className="modalImage__text">New profile picture</button>
+                                <input ref={imageAddRef} onChange={submitAddPhoto}  type="file" hidden/>
                             </div>
                         }
 
