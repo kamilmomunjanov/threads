@@ -23,17 +23,17 @@ const ModalListFollow = ({modal, setModal}) => {
                  onClick={e => e.stopPropagation()}>
                 <img onClick={() => setModal(false)} className="closeIcon" src={close} alt="Close"/>
                 <div className="header">
-                    <h3 className={active === 1 ? "header__title followers active" : "header__title followers"}
+                    <h3 className={`${active === 1 ? 'active' : ''} header__title followers` }
                         onClick={(e) => {
                             e.stopPropagation()
                             setActive(1)
                         }}>Followers</h3>
-                    <h3 className={active === 2 ? "header__title following active1" : "header__title following"}
+                    <h3 className={`${active === 2 ? 'active' : ""} header__title following` }
                         onClick={(e) => {
                             e.stopPropagation()
                             setActive(2)
                         }}>Following</h3>
-                    <h3 className={active === 3 ? "header__title pending active2" : "header__title pending"}
+                    <h3 className={`${active === 3 ? 'active' : ''} header__title pending` }
                         onClick={(e) => {
                             e.stopPropagation()
                             setActive(3)
@@ -66,7 +66,7 @@ const ModalListFollow = ({modal, setModal}) => {
                         </div>
                         <button className="followers__list-btn follow">
                             {
-                               dataF.success ? "Follow" : "Following"
+                               dataF?.success ? "Follow" : "Following"
                             }
                         </button>
                     </div>

@@ -95,11 +95,15 @@
     color: #141414;
 }
 
-.followers.active, .following.active1, .pending.active2{
+.header__title {
+
+}
+
+.header__title.active{
     position: relative;
 }
 
-.followers.active::before, .following.active1::before, .pending.active2::before{
+.header__title.active::before{
     content: "";
     position: absolute;
     bottom: -121%;
@@ -109,7 +113,7 @@
     background-color: black;
 }
 
-.followers.active::after, .following.active1::after, .pending.active2::after{
+.header__title.active::after{
     content: "";
     position: absolute;
     bottom: -121%;

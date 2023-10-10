@@ -22,6 +22,7 @@ import {useForm} from "react-hook-form";
 
 const MainPage = ({modal, setModal}) => {
     const [activeTab, setActiveTab] = useState(1)
+    const [currentTime, setCurrentTime] = useState(new Date());
     const [text, setText] = useState("")
     const [readOnly, setReadOnly] = useState("Anyone can reply")
     const navigate = useNavigate()
@@ -47,7 +48,7 @@ const MainPage = ({modal, setModal}) => {
     const seconds = datetime.getUTCSeconds().toString().padStart(2, '0');
 
     const timeString = `${hours}:${minutes}:${seconds}`;
-    const time = hours || minutes
+
 
     const handleSubmitThread = (data, e) => {
         // console.log(data)
@@ -66,6 +67,37 @@ const MainPage = ({modal, setModal}) => {
             alert("Ошибка при добавлении треда")
         }
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const hour = currentTime.getHours().toString().padStart(2, '0');
+    const minute = currentTime.getMinutes().toString().padStart(2, '0');
+    const second = currentTime.getSeconds().toString().padStart(2, '0');
+    const timeToday = `${hour}:${minute}:${second}`;
+
+
+
+    const startDate = new Date(); // Начальная дата
+    const endDate = new Date();   // Конечная дата
+
+    startDate.setHours(datetime.getUTCHours()); // Устанавливаем часы начальной даты
+    endDate.setHours(currentTime.getHours());   // Устанавливаем часы конечной даты
+
+    const timeDifference = endDate - startDate; // Разница в миллисекундах
+    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // Переводим в часы
+    const minutesDifference = hoursDifference * 60; // Переводим в минуты
+
+    const hoursMinus = hoursDifference
+    const minutesMinus = hoursDifference % 60;
+
+    const displayTime = hoursMinus > 0 ? `${hoursMinus}h` : `${minutesMinus}m`;
+
 
 
     useEffect(() => {
@@ -118,37 +150,48 @@ const MainPage = ({modal, setModal}) => {
                         <MainModal read={readOnly} setRead={setReadOnly} modal={modal} setModal={setModal}/>
                     </div>
                 </form>
-                <div className={styles.feed}>
-                    <div className={styles.userPhoto}>
-                        <img style={{width:"40px",height:"40px",borderRadius:"50%"}} src={_data.photo} alt="Avatar"/>
-                        <img className={styles.subscribe} src={add} alt="add"/>
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.contentTop}>
-                            <p className={styles.title} onClick={(e) => {
-                                e.stopPropagation()
-                                navigate("/home/other-user")
-                            }}>{data.threads[0].author}</p>
-                            <p className={styles.subtitle}>{time}h</p>
-                        </div>
-                        <div className={styles.contentBot}>
-                            <img style={{cursor: "pointer"}} src={image} alt="image"/>
-                            {/*data.threads[0].photos[0].photo*/}
-                            <div className={styles.activity}>
-                                <Link to="#"><img className={styles.activityBtn} src={like} alt="like"/></Link>
-                                <Link to="/home/comment"><img className={styles.activityBtn} src={comment}
-                                                              alt="comment"/></Link>
-                                <Link to="#"><img className={styles.activityBtn} src={repost} alt="repost"/></Link>
-                                <Link to="#"><img className={styles.activityBtn} src={send} alt="send"/></Link>
-                            </div>
-                            <div className={styles.positionDot}>
-                                <p className={styles.bodyText}>640 replies</p>
-                                <span className={styles.dot}>.</span>
-                                <p className={styles.bodyText}>12K likes</p>
-                            </div>
-                        </div>
 
-                    </div>
+                    <div style={{display:"flex", flexDirection:"column"}}>
+
+                    {
+                        data.threads.map((item)=>
+                            <div className={styles.feed}>
+                                <div className={styles.userPhoto}>
+                                    <img style={{width:"40px",height:"40px",borderRadius:"50%"}} src={_data.photo} alt="Avatar"/>
+                                    <img className={styles.subscribe} src={add} alt="add"/>
+                                </div>
+                                <div className={styles.content}>
+                            <div className={styles.contentTop}>
+                                <p className={styles.title} onClick={(e) => {
+                                    e.stopPropagation()
+                                    navigate("/home/other-user")
+                                }}>{item.author}</p>
+                                <p className={styles.subtitle}>{
+                                    displayTime
+                                }</p>
+                            </div>
+                            <div className={styles.contentBot}>
+                                <img style={{width:"567px",height:"316px",cursor: "pointer"}} src={item.photos[0]?.photo} alt="image"/>
+
+                                <div className={styles.activity}>
+                                    <Link to="#"><img className={styles.activityBtn} src={like} alt="like"/></Link>
+                                    <Link to="/home/comment"><img className={styles.activityBtn} src={comment}
+                                                                  alt="comment"/></Link>
+                                    <Link to="#"><img className={styles.activityBtn} src={repost} alt="repost"/></Link>
+                                    <Link to="#"><img className={styles.activityBtn} src={send} alt="send"/></Link>
+                                </div>
+                                <div className={styles.positionDot}>
+                                    <p className={styles.bodyText}>640 replies</p>
+                                    <span className={styles.dot}>.</span>
+                                    <p className={styles.bodyText}>{item.likes}{
+                                        item.likes < 1000 ? "" : "K"
+                                    } likes</p>
+                                </div>
+                            </div>
+                                </div>
+                        </div>)
+                    }
+
                 </div>
 
                 <div className={styles.feed}>
