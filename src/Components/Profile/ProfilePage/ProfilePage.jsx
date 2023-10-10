@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import styles from "./ProfilePage.module.css";
 import Layout from "../../Layout/Layout";
 import next from "../../images/svg/profile/Next.svg";
@@ -14,12 +14,37 @@ import ModalPage from "../modalPage/ModalPage";
 import ProfileModal from "./ProfileModal";
 import ModalListFollow from "./ProfileModaListFollow/ModalListFollow";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {followMe} from "../../../redux/reducers/followSlice";
+import {followYou} from "../../../redux/reducers/followYouSlice";
+import {profileUser} from "../../../redux/reducers/profileSlice";
+import {profileUsername} from "../../../redux/reducers/otherProfile";
 
 
 const ProfilePage = ({modal, setModal}) => {
     const [modalPage, setModalPage] = useState(false)
     const [modalFollow, setModalFollow] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const {_data} = useSelector((store) => store.profileSlice)
+    const {data} = useSelector((store) => store.followSlice)
+    const {dataF} = useSelector((store) => store.followYouSlice)
+
+
+    useEffect(()=>{
+        dispatch(followMe())
+    },[])
+    useEffect(()=>{
+        dispatch(followYou())
+    },[])
+
+    useEffect(()=>{
+        dispatch(profileUser())
+    },[])
+
+    useEffect(()=>{
+        dispatch(profileUsername())
+    },[])
 
     return (
         <div className={styles.profilePage}>
@@ -27,14 +52,16 @@ const ProfilePage = ({modal, setModal}) => {
             <div className={styles.loginPage__right}>
                     <div className={styles.info}>
                         <div className={styles.information}>
-                            <img src={avatar} alt="Avatar"/>
+                            <img style={{width:"150px",height:"150px",borderRadius:"50%"}} src={_data.photo} alt="Avatar"/>
                             <div className={styles.aboutUser}>
-                                <h2 className={styles.title}>Design lead</h2>
-                                <p className={styles.subtitle}>malevicz
+                                <h2 className={styles.title}>{_data.bio}</h2>
+                                <p className={styles.subtitle}>{_data.username}
                                     <a className={styles.threadsNet} target="_blank"
                                        href="https://www.threads.net/">threads.net</a>
                                 </p>
-                                <p onClick={() => setModalFollow(true)} className={styles.followers}>153K followers</p>
+                                <p onClick={() => setModalFollow(true)} className={styles.followers}>{data && data.following ? data.following.length : 0}{
+                                    data?.following?.length < 1000 ? "" : "K"
+                                } followers</p>
                                 <ModalListFollow modal={modalFollow} setModal={setModalFollow}/>
                             </div>
                         </div>

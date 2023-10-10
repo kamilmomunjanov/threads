@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import styles from "./EditProfile.module.css";
 import Layout from "../../Layout/Layout";
 import arrow from "../../images/svg/editProfile/Arrow.svg";
@@ -10,10 +10,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {profileUser} from "../../../redux/reducers/profileSlice";
 import {profileUpdate} from "../../../redux/reducers/profileSlice";
+import instance from "../../../config/axios";
 
 
 const EditProfile = ({modal, setModal}) => {
     const navigate = useNavigate()
+    const [getPhoto, setGetPhoto] = useState(null)
     const dispatch = useDispatch()
     const {_data, status, error} = useSelector((store) => store.profileSlice)
     const {_data:photoData} = useSelector((store) => store.photoProfile)
@@ -30,10 +32,8 @@ const EditProfile = ({modal, setModal}) => {
         values: _data
     })
 
-    console.log(photoData)
     useEffect(()=>{
         dispatch(profileUser())
-        console.log(_data.photo)
     },[])
 
     const handleSubmitProfileUpdate = async(data) => {
@@ -42,12 +42,11 @@ const EditProfile = ({modal, setModal}) => {
             const user = window.localStorage.getItem("id")
             const username = data.username
             const name = data.name
-            const photo = null
-            const bio = null
+            const bio = data.bio
             const is_private = false
 
 
-            await dispatch(profileUpdate({user,username,name,photo,bio,is_private}))
+            await dispatch(profileUpdate({user,username,name,bio,is_private}))
             await dispatch(profileUser())
 
         }catch (error) {
@@ -56,6 +55,12 @@ const EditProfile = ({modal, setModal}) => {
         }
     }
 
+    useEffect(()=>{
+        instance.get("user/me/update-profile-photo/",
+            {
+                headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+            }).then(({data}) => setGetPhoto(data.photo))
+    },[getPhoto])
 
 if (_data) {
     return (
@@ -70,10 +75,10 @@ if (_data) {
                 <form noValidate onSubmit={handleSubmit(handleSubmitProfileUpdate)}>
 
                     {
-                        _data.photo ? <img className={`${styles.imgUser} ${styles.imgUserUpdate}`} src={`${_data.photo}`} alt=""/> :<img className={styles.imgUser} src={user} alt="User"/>
+                        getPhoto ? <img className={`${styles.imgUser} ${styles.imgUserUpdate}`} src={`${getPhoto}`} alt=""/> :<img className={styles.imgUser} src={user} alt="User"/>
                     }
                     <p onClick={() => setModal(true)} className={styles.addPhoto}>Edit photo</p>
-                    <ModalPage modal={modal} setModal={setModal}/>
+                    <ModalPage getPhoto={getPhoto} setGetPhoto={setGetPhoto} modal={modal} setModal={setModal}/>
                     <div className={styles.editCard}>
 
                         <label className={styles.label}>
@@ -83,7 +88,7 @@ if (_data) {
                                        type="text" readOnly  />
                             </div>
                         </label>
-                        <button type='submit'>change</button>
+
                         <label className={styles.label}>
                             <div className={styles.username}>
                                 <span className={styles.label}>Name</span>
@@ -121,6 +126,7 @@ if (_data) {
                                        type="text"   placeholder="+ Add link"/>
                             </div>
                         </label>
+                        <button className={styles.btn} type='submit'>Change</button>
 
 
                         <div className={styles.private}>

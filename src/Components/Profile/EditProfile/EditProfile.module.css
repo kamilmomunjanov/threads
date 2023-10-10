@@ -105,6 +105,18 @@
     font-weight: 400;
 }
 
+.btn{
+    padding: 10px 0;
+    border: 1px solid #D9D9D9;
+    color: black;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+
+
 .field::placeholder{
     font-size: 17px;
     font-weight: 400;

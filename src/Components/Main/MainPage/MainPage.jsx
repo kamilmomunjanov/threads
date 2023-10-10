@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, Link, useNavigate} from "react-router-dom";
 import avatar from "../../images/svg/main/avatar.svg"
 import media from "../../images/svg/main/Vector.svg"
@@ -15,11 +15,62 @@ import img from "../../images/png/Image.png";
 import styles from "./MainPage.module.css";
 import RightLayout from "../../Layout/RightLayout";
 import MainModal from "./Modal/MainModal";
+import {useDispatch, useSelector} from "react-redux";
+import {createThreads, getThreads} from "../../../redux/reducers/threadSlice";
+import {useForm} from "react-hook-form";
+
 
 const MainPage = ({modal, setModal}) => {
     const [activeTab, setActiveTab] = useState(1)
+    const [text, setText] = useState("")
     const [readOnly, setReadOnly] = useState("Anyone can reply")
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const imageAddRef = useRef(null)
+    const textRef = useRef(null)
+    const {data, status, error} = useSelector((store) => store.threadSlice)
+    const {_data} = useSelector((store) => store.profileSlice)
+    const {
+        register,
+        handleSubmit,
+        watch
+    } = useForm({
+        mode: "onChange",
+        // values: _data
+    })
+
+    const datetimeString = data.threads[0].created;
+    const datetime = new Date(datetimeString);
+
+    const hours = datetime.getUTCHours().toString().padStart(2, '0');
+    const minutes = datetime.getUTCMinutes().toString().padStart(2, '0');
+    const seconds = datetime.getUTCSeconds().toString().padStart(2, '0');
+
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    const time = hours || minutes
+
+    const handleSubmitThread = (data, e) => {
+        // console.log(data)
+        // // console.log(data.image[0].name)
+        // console.log(e.target[2].files[0])
+        console.log(imageAddRef.current.files[0])
+        try {
+            const content = data.text
+            const photo = imageAddRef.current.files[0]
+            const formData = new FormData()
+            formData.append("content", content);
+            formData.append("photos", photo)
+            dispatch(createThreads(formData))
+        } catch (error) {
+            console.warn(error)
+            alert("Ошибка при добавлении треда")
+        }
+    }
+
+
+    useEffect(() => {
+        dispatch(getThreads())
+    }, [])
 
     return (
         <div className={styles.mainPage}>
@@ -38,26 +89,27 @@ const MainPage = ({modal, setModal}) => {
                             setActiveTab(2)
                         }}>Following</h4>
                 </div>
-                <div className={styles.threads}>
+                <form onSubmit={handleSubmit(handleSubmitThread)} className={styles.threads}>
                     <div className={styles.top}>
                         <div className={styles.writeThreads}>
-                            <img src={avatar} alt="Avatar"/>
+                            <img style={{width:"40px",height:"40px",borderRadius:"50%"}} src={_data.photo} alt="Avatar"/>
                             <div className={styles.createThreads}>
-                                <h4 className={styles.name}>malevicz</h4>
-                                <textarea className={styles.textarea} name="threads"
+                                <h4 className={styles.name}>{_data.username}</h4>
+                                <textarea ref={textRef} {...register("text",)} className={styles.textarea}
                                           placeholder="Start a thread..."></textarea>
                             </div>
                         </div>
                         <div className={styles.sendThreads}>
-                            <button className={styles.btn}>Post</button>
+                            <button type="onSubmit" className={styles.btn}>Post</button>
                         </div>
                     </div>
                     <div className={styles.under}>
                         <div>
-                            <label htmlFor="image">
-                                <img className={styles.media} src={media} alt="media"/>
-                            </label>
-                            <input className={styles.input} id="image" type="file"/>
+                            <img onClick={(e) => {
+                                e.stopPropagation()
+                                imageAddRef.current.click()
+                            }} className={styles.media} src={media} alt="media"/>
+                            <input ref={imageAddRef} className={styles.input} type="file"/>
                         </div>
                         <p className={styles.text} onClick={e => {
                             e.stopPropagation()
@@ -65,25 +117,27 @@ const MainPage = ({modal, setModal}) => {
                         }}>{readOnly}</p>
                         <MainModal read={readOnly} setRead={setReadOnly} modal={modal} setModal={setModal}/>
                     </div>
-                </div>
-
+                </form>
                 <div className={styles.feed}>
                     <div className={styles.userPhoto}>
-                        <img className={styles.userImg} src={user} alt="user"/>
+                        <img style={{width:"40px",height:"40px",borderRadius:"50%"}} src={_data.photo} alt="Avatar"/>
                         <img className={styles.subscribe} src={add} alt="add"/>
                     </div>
                     <div className={styles.content}>
                         <div className={styles.contentTop}>
                             <p className={styles.title} onClick={(e) => {
                                 e.stopPropagation()
-                                navigate("/home/other-user")}}>sarcastic_us</p>
-                            <p className={styles.subtitle}>12h</p>
+                                navigate("/home/other-user")
+                            }}>{data.threads[0].author}</p>
+                            <p className={styles.subtitle}>{time}h</p>
                         </div>
                         <div className={styles.contentBot}>
                             <img style={{cursor: "pointer"}} src={image} alt="image"/>
+                            {/*data.threads[0].photos[0].photo*/}
                             <div className={styles.activity}>
                                 <Link to="#"><img className={styles.activityBtn} src={like} alt="like"/></Link>
-                                <Link to="/home/comment"><img className={styles.activityBtn} src={comment} alt="comment"/></Link>
+                                <Link to="/home/comment"><img className={styles.activityBtn} src={comment}
+                                                              alt="comment"/></Link>
                                 <Link to="#"><img className={styles.activityBtn} src={repost} alt="repost"/></Link>
                                 <Link to="#"><img className={styles.activityBtn} src={send} alt="send"/></Link>
                             </div>
@@ -126,6 +180,68 @@ const MainPage = ({modal, setModal}) => {
 
                     </div>
                 </div>
+
+                {/*<div className={styles.feed}>*/}
+                {/*    <div className={styles.userPhoto}>*/}
+                {/*        <img className={styles.userImg} src={user} alt="user"/>*/}
+                {/*        <img className={styles.subscribe} src={add} alt="add"/>*/}
+                {/*    </div>*/}
+                {/*    <div className={styles.content}>*/}
+                {/*        <div className={styles.contentTop}>*/}
+                {/*            <p className={styles.title} onClick={(e) => {*/}
+                {/*                e.stopPropagation()*/}
+                {/*                navigate("/home/other-user")*/}
+                {/*            }}>sarcastic_us</p>*/}
+                {/*            <p className={styles.subtitle}>12h</p>*/}
+                {/*        </div>*/}
+                {/*        <div className={styles.contentBot}>*/}
+                {/*            <img style={{cursor: "pointer"}} src={image} alt="image"/>*/}
+                {/*            <div className={styles.activity}>*/}
+                {/*                <Link to="#"><img className={styles.activityBtn} src={like} alt="like"/></Link>*/}
+                {/*                <Link to="/home/comment"><img className={styles.activityBtn} src={comment}*/}
+                {/*                                              alt="comment"/></Link>*/}
+                {/*                <Link to="#"><img className={styles.activityBtn} src={repost} alt="repost"/></Link>*/}
+                {/*                <Link to="#"><img className={styles.activityBtn} src={send} alt="send"/></Link>*/}
+                {/*            </div>*/}
+                {/*            <div className={styles.positionDot}>*/}
+                {/*                <p className={styles.bodyText}>640 replies</p>*/}
+                {/*                <span className={styles.dot}>.</span>*/}
+                {/*                <p className={styles.bodyText}>12K likes</p>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+
+                {/*    </div>*/}
+                {/*</div>*/}
+
+                {/*<div className={styles.feed}>*/}
+                {/*    <div className={styles.userPhoto}>*/}
+                {/*        <img className={styles.userImg} src={user2} alt="user"/>*/}
+                {/*        <img className={styles.subscribe} src={add} alt="add"/>*/}
+                {/*    </div>*/}
+                {/*    <div className={styles.content}>*/}
+                {/*        <div className={styles.contentTop}>*/}
+                {/*            <p className={styles.title}>iamnalimov</p>*/}
+                {/*            <p className={styles.subtitle}>1m</p>*/}
+                {/*        </div>*/}
+                {/*        <p className={styles.titleText}>Focusing is about saying no. Stay focused on what truly*/}
+                {/*            matters.</p>*/}
+                {/*        <div className={styles.contentBot}>*/}
+                {/*            <img style={{cursor: "pointer"}} src={img} alt="image"/>*/}
+                {/*            <div className={styles.activity}>*/}
+                {/*                <img className={styles.activityBtn} src={like} alt="like"/>*/}
+                {/*                <img className={styles.activityBtn} src={comment} alt="comment"/>*/}
+                {/*                <img className={styles.activityBtn} src={repost} alt="repost"/>*/}
+                {/*                <img className={styles.activityBtn} src={send} alt="send"/>*/}
+                {/*            </div>*/}
+                {/*            <div className={styles.positionDot}>*/}
+                {/*                <p className={styles.bodyText}>640 replies</p>*/}
+                {/*                <span className={styles.dot}>.</span>*/}
+                {/*                <p className={styles.bodyText}>12K likes</p>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+
+                {/*    </div>*/}
+                {/*</div>*/}
 
             </div>
             <RightLayout/>

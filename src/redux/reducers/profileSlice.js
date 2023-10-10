@@ -17,7 +17,6 @@ export const profileUser = createAsyncThunk(
             }
 
 
-            // window.localStorage.setItem("access_token", response.data.token.access)
             return response.data
 
         }catch (err) {
@@ -27,27 +26,16 @@ export const profileUser = createAsyncThunk(
 )
 
 
-// {
-//     "user": 3,
-//     "username": "Kamil",
-//     "name": "IT",
-//     "photo": null,
-//     "bio": null,
-//     "is_private": false,
-//     "number_of_followers": 0,
-//     "number_of_following": 0
-// }
 
 
 export const profileUpdate = createAsyncThunk(
     "profile/profileUpdate",
-    async ({user,username,name,photo,bio,is_private}, {rejectWithValue}) => {
+    async ({user,username,name,bio,is_private}, {rejectWithValue}) => {
         try {
             const response = await instance.put("user/me/",{
                 user:user,
                 name:name,
                 username:username,
-                photo:photo,
                 bio:bio,
                 is_private:is_private
             },
@@ -110,6 +98,7 @@ const profileSlice = createSlice({
                 state.status = "error"
                 state.error = action.payload
             })
+
     }
 })
 

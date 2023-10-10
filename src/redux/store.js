@@ -5,7 +5,12 @@ import forgotPasswordSlice from "./reducers/forgotPasswordSlice";
 import verificationSlice from "./reducers/verificationSlice";
 import profileSlice from "./reducers/profileSlice";
 import photoProfile from "./reducers/photoProfile";
+import threadSlice from "./reducers/threadSlice";
+import followSlice from "./reducers/followSlice";
+import followYouSlice from "./reducers/followYouSlice";
+import otherProfileSlice from "./reducers/otherProfile";
 import {rememberReducer, rememberEnhancer} from "redux-remember";
+
 
 
 const rootReducer = combineReducers({
@@ -15,11 +20,15 @@ const rootReducer = combineReducers({
     verificationSlice,
     profileSlice,
     photoProfile,
+    threadSlice,
+    followSlice,
+    otherProfileSlice,
+    followYouSlice
 })
 
 const reducer = rememberReducer(rootReducer)
 
-const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice", ]
+const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice", "threadSlice" ]
 
 
 const store = configureStore({

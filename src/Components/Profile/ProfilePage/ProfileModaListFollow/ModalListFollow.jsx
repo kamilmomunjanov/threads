@@ -1,13 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import close from "../../../images/svg/followers/close.svg";
 import search from "../../../images/svg/followers/search.svg";
 import avatar from "../../../images/svg/followers/Avatar.svg";
 import ava from "../../../images/svg/followers/Left.svg";
 import image from "../../../images/svg/followers/Avat.svg";
 import "./ModalListFollow.css";
+import {useDispatch, useSelector} from "react-redux";
+import {profileUsername} from "../../../../redux/reducers/otherProfile";
 
 const ModalListFollow = ({modal, setModal}) => {
     const [active, setActive] = useState(1)
+    const dispatch = useDispatch()
+    const {data} = useSelector((store) => store.followSlice)
+    const {dataF} = useSelector((store) => store.followYouSlice)
+    const {_data} = useSelector((store) => store.otherProfileSlice)
+
+
+
     return (
         <div className={modal ? "modalFollow active" : "modalFollow"}>
             <div className={modal ? "modalFollow__content active" : "modalFollow__content"}
@@ -49,43 +58,17 @@ const ModalListFollow = ({modal, setModal}) => {
                     </div>
                     <div className="followers__list">
                         <div className="user">
-                            <img className="user__image" src={avatar} alt="User-photo"/>
+                            <img className="user__image" style={{width:"36px",height:"36px",borderRadius:"50%"}}  src={_data?.photo} alt="User-photo"/>
                             <div className="user__info">
-                                <h4 className="user__info-title">lily.rose</h4>
-                                <p className="user__info-subtitle">Rose</p>
+                                <h4 className="user__info-title">{data?.following[0]?.followers}</h4>
+                                <p className="user__info-subtitle">{_data?.bio}</p>
                             </div>
                         </div>
-                        <button className="followers__list-btn follow">Follow</button>
-                    </div>
-                    <div className="followers__list">
-                        <div className="user">
-                            <img className="user__image" src={avatar} alt="User-photo"/>
-                            <div className="user__info">
-                                <h4 className="user__info-title">gamingaddict</h4>
-                                <p className="user__info-subtitle">Jenny</p>
-                            </div>
-                        </div>
-                        <button className="followers__list-btn">Requested</button>
-                    </div>
-                    <div className="followers__list">
-                        <div className="user">
-                            <img className="user__image" src={avatar} alt="User-photo"/>
-                            <div className="user__info">
-                                <h4 className="user__info-title">iamnalimov</h4>
-                                <p className="user__info-subtitle">UX/UI</p>
-                            </div>
-                        </div>
-                        <button className="followers__list-btn">Following</button>
-                    </div>
-                    <div className="followers__list">
-                        <div className="user">
-                            <img className="user__image" src={avatar} alt="User-photo"/>
-                            <div className="user__info">
-                                <h4 className="user__info-title">lily.rose</h4>
-                                <p className="user__info-subtitle">Rose</p>
-                            </div>
-                        </div>
-                        <button className="followers__list-btn follow">Follow</button>
+                        <button className="followers__list-btn follow">
+                            {
+                               dataF.success ? "Follow" : "Following"
+                            }
+                        </button>
                     </div>
                     <div className="followers__list">
                         <div className="user">

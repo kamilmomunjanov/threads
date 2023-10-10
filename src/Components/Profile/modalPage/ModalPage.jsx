@@ -10,7 +10,7 @@ import {profilePhoto} from "../../../redux/reducers/photoProfile";
 import {profileUser} from "../../../redux/reducers/profileSlice";
 import instance from "../../../config/axios";
 
-const ModalPage = ({modal, setModal}) => {
+const ModalPage = ({modal, setModal, getPhoto, setGetPhoto}) => {
     const imageAddRef = useRef(null)
     const location = useLocation()
     const dispatch = useDispatch()
@@ -27,16 +27,24 @@ const ModalPage = ({modal, setModal}) => {
             const formData = new FormData()
             const file = imageAddRef.current.files[0]
             formData.append('photo', file)
-            // await dispatch(profilePhoto(formData))
             instance.put("user/me/update-profile-photo/", formData,
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
-                }).then((res) => dispatch(profileUser()) )
+                }).then((res) => console.log(res))
+            setGetPhoto()
             setModal(false)
         }catch (error) {
             console.warn(error)
             alert("Ошибка при загрузке файла")
         }
+    }
+
+    const deletePhoto = () => {
+        instance.delete("user/me/update-profile-photo/",
+            {
+                headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+            }).then(({data}) => setGetPhoto(data.photo))
+        setModal(false)
     }
 
 
@@ -84,6 +92,7 @@ const ModalPage = ({modal, setModal}) => {
                                 <img src={removePhoto} alt=""/>
                                 <button type="button" onClick={(e) => {
                                     e.stopPropagation()
+                                    deletePhoto()
                                 }} className="modalImage__text remove">Remove current picture</button>
                             </div>
                         }
