@@ -1,76 +1,88 @@
-import React from 'react';
-import ava from "../images/svg/main/avatar.svg";
+import React, {useEffect} from 'react';
 import styles from "./Layout.module.css";
+import {allUser} from "../../redux/reducers/allUserSlice";
+import {followUser} from "../../redux/reducers/followByUserSlice";
+import user from "../images/svg/main/unknown.svg";
+import {useDispatch, useSelector} from "react-redux";
+import followYouSlice, {followYou} from "../../redux/reducers/followYouSlice";
 
 
 const RightLayout = () => {
+    const dispatch = useDispatch()
+    const {data} = useSelector((store) => store.allUserSlice)
+    const {_data} = useSelector((store) => store.profileSlice)
+    const {dataF} = useSelector((store) => store.followYouSlice)
+    const {data: followMe} = useSelector((store) => store.followSlice)
+    const {data: followUserDone} = useSelector((store) => store.followByUserSlice)
+
+    useEffect(() => {
+        dispatch(allUser())
+    }, [])
+
+    useEffect(() => {
+        dispatch(followYou())
+    }, [])
+
+
+    function handleFollowUser(id) {
+        dispatch(followUser({id}))
+
+    }
+
+    console.log(dataF?.following)
+    console.log(data?.results)
+
+
+    // const filteredButtons = dataF?.following?.some((item) => item.follows === data.username);
+
+
     return (
-            <div className={styles.aside}>
-                <div className={styles.suggest}>
-                    <div className={styles.user}>
-                        <img style={{cursor:"pointer"}} src={ava} alt="avatar"/>
-                        <div>
-                            <h4 className={styles.title}>malevicz</h4>
-                            <p className={styles.subtitle}>Design lead</p>
-                        </div>
+        <div className={styles.aside}>
+            <div className={styles.suggest}>
+                <div className={styles.user}>
+                    <img style={{width: "40px", height: "40px", borderRadius: "50%"}} src={_data.photo} alt="avatar"/>
+                    <div>
+                        <h4 className={styles.title}>{_data.username}</h4>
+                        <p className={styles.subtitle}>{_data.bio}</p>
                     </div>
-                    <p className={styles.switch}>Switch</p>
                 </div>
-                <div className={styles.suggested}>
-                    <div><span className={styles.subtitle}>Suggested for you</span></div>
-                    <div><span className={styles.title}>See All</span></div>
-                </div>
-                <div className={styles.suggest}>
-                    <div className={styles.user}>
-                        <img style={{cursor:"pointer"}} src={ava} alt="avatar"/>
-                        <div>
-                            <h4 className={styles.title}>mkbhd</h4>
-                            <p className={styles.subtitle}>Follows you</p>
-                        </div>
-                    </div>
-                    <button className={styles.btn}>Following</button>
-                </div>
-                <div className={styles.suggest}>
-                    <div className={styles.user}>
-                        <img style={{cursor:"pointer"}} src={ava} alt="avatar"/>
-                        <div>
-                            <h4 className={styles.title}>marh9</h4>
-                            <p className={styles.subtitle}>Follows you</p>
-                        </div>
-                    </div>
-                    <button className={styles.btn}>Follow</button>
-                </div>
-                <div className={styles.suggest}>
-                    <div className={styles.user}>
-                        <img style={{cursor:"pointer"}} src={ava} alt="avatar"/>
-                        <div>
-                            <h4 className={styles.title}>madebyryan</h4>
-                            <p className={styles.subtitle}>Suggested for you</p>
-                        </div>
-                    </div>
-                    <button className={styles.btn}>Follow</button>
-                </div>
-                <div className={styles.suggest}>
-                    <div className={styles.user}>
-                        <img style={{cursor:"pointer"}} src={ava} alt="avatar"/>
-                        <div>
-                            <h4 className={styles.title}>madebyryan</h4>
-                            <p className={styles.subtitle}>Suggested for you</p>
-                        </div>
-                    </div>
-                    <button className={styles.btn}>Follow</button>
-                </div>
-                <div className={styles.suggest}>
-                    <div className={styles.user}>
-                        <img style={{cursor:"pointer"}} src={ava} alt="avatar"/>
-                        <div>
-                            <h4 className={styles.title}>marh9</h4>
-                            <p className={styles.subtitle}>Follows you</p>
-                        </div>
-                    </div>
-                    <button className={styles.btn}>Follow</button>
-                </div>
+                <p className={styles.switch}>Switch</p>
             </div>
+            <div className={styles.suggested}>
+                <div><span className={styles.subtitle}>Suggested for you</span></div>
+                <div><span className={styles.title}>See All</span></div>
+            </div>
+            {
+                data?.results?.map((item, index) =>
+                    <div className={styles.suggest}>
+                        <div className={styles.user}>
+
+                            {
+                                item?.photo
+                                    ?
+                                    <img style={{cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%"}}
+                                         src={item.photo} alt="avatar"/>
+                                    : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
+                            }
+                            <div>
+                                <h4 className={styles.title}>{item.username}</h4>
+                                <p className={styles.subtitle}>
+                                {dataF?.following?.some((user) => user.follows === item.username) ? "Follows you" : "Unfollows you"}
+                                </p>
+                            </div>
+                        </div>
+
+                        <button type="button" onClick={() => {
+                            handleFollowUser(item.user)
+                        }} className={styles.btn}>
+                            {dataF?.following?.some((user) => user.follows === item.username) ? "Following" : "Follow"}
+                        </button>
+
+                    </div>
+                )
+            }
+
+        </div>
     );
 };
 

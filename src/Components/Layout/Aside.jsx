@@ -2,8 +2,13 @@ import React from 'react';
 import "./aside.css";
 import styles from "./Layout.module.css";
 import ava from "../images/svg/main/avatar.svg";
+import {useDispatch, useSelector} from "react-redux";
 
 const Aside = ({aside, setAside}) => {
+    const dispatch = useDispatch()
+    const {_data} = useSelector((store) => store.profileSlice)
+
+
     return (
         <div className={aside ? "aside active" : "aside"}>
             <div className={aside ? "aside__content active" : "aside__content"}>
