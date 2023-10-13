@@ -15,6 +15,12 @@ import MainModal from "./Modal/MainModal";
 import {useDispatch, useSelector} from "react-redux";
 import {createThreads, getThreads} from "../../../redux/reducers/threadSlice";
 import {useForm} from "react-hook-form";
+import user from "../../images/svg/main/unknown.svg";
+import {oneUser} from "../../../redux/reducers/profilUserSlice";
+import {threadsFollowing} from "../../../redux/reducers/threadsFollowing";
+import {likeThread} from "../../../redux/reducers/likeSlice";
+import activity  from "../../UI/svg1/like.svg";
+import axios from "axios";
 
 
 const MainPage = ({modal, setModal}) => {
@@ -27,12 +33,37 @@ const MainPage = ({modal, setModal}) => {
     const textRef = useRef(null)
     const {data} = useSelector((store) => store.threadSlice)
     const {_data} = useSelector((store) => store.profileSlice)
+    const {data: userOne} = useSelector((store) => store.profileUserSlice)
+    const {data: threadFollow} = useSelector((store) => store.threadsFollowingSlice)
+    const {likeDone} = useSelector((store) => store.likeSlice)
+    const [threads, setThreads] = useState()
+    const [text, setText] = useState("")
+    const [getLike, setGetLike] = useState(null)
     const {
         register,
         handleSubmit,
     } = useForm({
         mode: "onChange",
     })
+
+    useEffect(() => {
+        dispatch(threadsFollowing())
+    }, [])
+
+    console.log(threadFollow)
+
+    const oneUserProfile = (username) => {
+        dispatch(oneUser({username}))
+    }
+
+    const handleLike = (id) => {
+        axios.post(`http://aldiyar-backender.org.kg/api/thread/${id}/like/`,null,
+        {
+            headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+        }).then(({data}) => console.log(data))
+
+
+    }
 
     // const datetimeString = data.created
     //
@@ -55,6 +86,7 @@ const MainPage = ({modal, setModal}) => {
             formData.append("content", content);
             formData.append("photos", photo)
             dispatch(createThreads(formData))
+            setText("")
         } catch (error) {
             console.warn(error)
             alert("Ошибка при добавлении треда")
@@ -94,6 +126,8 @@ const MainPage = ({modal, setModal}) => {
     useEffect(() => {
         dispatch(getThreads())
     }, [])
+
+
 
     return (
         <div className={styles.mainPage}>
@@ -143,46 +177,86 @@ const MainPage = ({modal, setModal}) => {
                     </div>
                 </form>
 
-                <div style={{display: "flex", flexDirection: "column"}}>
+                <div>
 
                     {
                         data.map((item) =>
-                            <div className={styles.feed}>
-                                <div className={styles.userPhoto}>
-                                    <img style={{width: "40px", height: "40px", borderRadius: "50%"}}
-                                         src={item.author.photo} alt="Avatar"/>
-                                    <img className={styles.subscribe} src={add} alt="add"/>
-                                </div>
-                                <div className={styles.content}>
-                                    <div className={styles.contentTop}>
-                                        <p className={styles.title} onClick={(e) => {
-                                            e.stopPropagation()
-                                            navigate("/home/other-user")
-                                        }}>{item.author.username}</p>
-                                        <p className={styles.subtitle}>{
-                                            item.created
-                                        }</p>
+                            <div className={activeTab === 1 ? "tabs__content active" : "tabs__content"}>
+                                <div className={styles.feed}>
+                                    <div className={styles.userPhoto}>
+                                        {
+                                            item.author.photo
+                                                ? <>
+                                                    <img style={{width: "40px", height: "40px", borderRadius: "50%"}}
+                                                         src={item.author.photo} alt="Avatar"/>
+                                                    <img className={styles.subscribe} src={add} alt="add"/>
+                                                </>
+                                                : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
+                                        }
                                     </div>
-                                    <p className={styles.titleText}>{item.content}</p>
-                                    <div className={styles.contentBot}>
-                                        <img style={{width: "570px", height: "316px", cursor: "pointer"}}
-                                             src={item.photos[0]?.photo} alt="image"/>
-
-                                        <div className={styles.activity}>
-                                            <Link to="#"><img className={styles.activityBtn} src={like}
-                                                              alt="like"/></Link>
-                                            <Link to="/home/comment"><img className={styles.activityBtn} src={comment}
-                                                                          alt="comment"/></Link>
-                                            <Link to="#"><img className={styles.activityBtn} src={repost} alt="repost"/></Link>
-                                            <Link to="#"><img className={styles.activityBtn} src={send}
-                                                              alt="send"/></Link>
+                                    <div className={styles.content}>
+                                        <div className={styles.contentTop}>
+                                            <p className={styles.title} onClick={(e) => {
+                                                e.stopPropagation()
+                                                oneUserProfile(item?.author?.username)
+                                                navigate("/home/other-user")
+                                            }}>{item.author.username}</p>
+                                            <p className={styles.subtitle}>{
+                                                item.created
+                                            }</p>
                                         </div>
-                                        <div className={styles.positionDot}>
-                                            <p className={styles.bodyText}>0 replies</p>
-                                            <span className={styles.dot}>.</span>
-                                            <p className={styles.bodyText}>{item.likes}{
-                                                item.likes < 1000 ? "" : "K"
-                                            } likes</p>
+                                        <p className={styles.titleText}>{item.content}</p>
+                                        <div className={styles.contentBot}>
+                                            {
+                                                item.photos[0]?.photo
+                                                    ? <img style={{
+                                                        width: "570px",
+                                                        height: "316px",
+                                                        cursor: "pointer",
+                                                        borderRadius: "8px"
+                                                    }}
+                                                           src={item.photos[0]?.photo} alt="image"/>
+                                                    : ""
+                                            }
+
+
+
+
+                                            <div className={styles.activity}>
+                                                <Link to="#">
+
+                                                    {
+                                                        getLike === "like thread"
+                                                            ? <img className={styles.activityBtn} src={activity}
+                                                                   alt="like" onClick={(e) => {
+                                                                e.preventDefault()
+                                                                e.stopPropagation()
+                                                                handleLike(item.id)
+                                                            }}/>
+                                                            : <img className={styles.activityBtn} src={like}
+                                                                   alt="like" onClick={(e) => {
+                                                                e.preventDefault()
+                                                                e.stopPropagation()
+                                                                handleLike(item.id)
+                                                            }}/>
+                                                    }
+
+                                                    </Link>
+                                                <Link to="/home/comment"><img className={styles.activityBtn}
+                                                                              src={comment}
+                                                                              alt="comment"/></Link>
+                                                <Link to="#"><img className={styles.activityBtn} src={repost}
+                                                                  alt="repost"/></Link>
+                                                <Link to="#"><img className={styles.activityBtn} src={send}
+                                                                  alt="send"/></Link>
+                                            </div>
+                                            <div className={styles.positionDot}>
+                                                <p className={styles.bodyText}>0 replies</p>
+                                                <span className={styles.dot}>.</span>
+                                                <p className={styles.bodyText}>{item.likes}{
+                                                    item.likes < 1000 ? "" : "K"
+                                                } likes</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,36 +264,79 @@ const MainPage = ({modal, setModal}) => {
                     }
 
                 </div>
+                <div style={{display: "flex", flexDirection: "column"}}>
+                    {
+                        threadFollow?.map((item) =>
+                            <div className={activeTab === 2 ? "tabs__content active" : "tabs__content"}>
+                                <div className={styles.feed}>
+                                    <div className={styles.userPhoto}>
+                                        {
+                                            item.author.photo
+                                                ? <>
+                                                    <img style={{width: "40px", height: "40px", borderRadius: "50%"}}
+                                                         src={item.author.photo} alt="Avatar"/>
+                                                    <img className={styles.subscribe} src={add} alt="add"/>
+                                                </>
+                                                : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
+                                        }
+                                    </div>
+                                    <div className={styles.content}>
+                                        <div className={styles.contentTop}>
+                                            <p className={styles.title} onClick={(e) => {
+                                                e.stopPropagation()
+                                                oneUserProfile(item?.author?.username)
+                                                navigate("/home/other-user")
+                                            }}>{item.author.username}</p>
+                                            <p className={styles.subtitle}>{
+                                                item.created
+                                            }</p>
+                                        </div>
+                                        <p className={styles.titleText}>{item.content}</p>
+                                        <div className={styles.contentBot}>
+                                            {
+                                                item.photos[0]?.photo
+                                                    ? <img style={{
+                                                        width: "570px",
+                                                        height: "316px",
+                                                        cursor: "pointer",
+                                                        borderRadius: "8px"
+                                                    }}
+                                                           src={item.photos[0]?.photo} alt="image"/>
+                                                    : ""
+                                            }
 
-                <div className={styles.feed}>
-                    <div className={styles.userPhoto}>
-                        <img className={styles.userImg} src={user2} alt="user"/>
-                        <img className={styles.subscribe} src={add} alt="add"/>
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.contentTop}>
-                            <p className={styles.title}>iamnalimov</p>
-                            <p className={styles.subtitle}>1m</p>
-                        </div>
-                        <p className={styles.titleText}>Focusing is about saying no. Stay focused on what truly
-                            matters.</p>
-                        <div className={styles.contentBot}>
-                            <img style={{cursor: "pointer"}} src={img} alt="image"/>
-                            <div className={styles.activity}>
-                                <img className={styles.activityBtn} src={like} alt="like"/>
-                                <img className={styles.activityBtn} src={comment} alt="comment"/>
-                                <img className={styles.activityBtn} src={repost} alt="repost"/>
-                                <img className={styles.activityBtn} src={send} alt="send"/>
-                            </div>
-                            <div className={styles.positionDot}>
-                                <p className={styles.bodyText}>0 replies</p>
-                                <span className={styles.dot}>.</span>
-                                <p className={styles.bodyText}>12K likes</p>
-                            </div>
-                        </div>
 
-                    </div>
+                                            <div className={styles.activity}>
+                                                <Link to="#">{
+                                                    getLike === "like thread"
+                                                        ? <img className={styles.activityBtn} src={like}
+                                                               alt="like"/>
+                                                        : <img className={styles.activityBtn} src={activity}
+                                                               alt="like"/>
+                                                }
+                                                    </Link>
+                                                <Link to="/home/comment"><img className={styles.activityBtn}
+                                                                              src={comment}
+                                                                              alt="comment"/></Link>
+                                                <Link to="#"><img className={styles.activityBtn} src={repost}
+                                                                  alt="repost"/></Link>
+                                                <Link to="#"><img className={styles.activityBtn} src={send}
+                                                                  alt="send"/></Link>
+                                            </div>
+                                            <div className={styles.positionDot}>
+                                                <p className={styles.bodyText}>0 replies</p>
+                                                <span className={styles.dot}>.</span>
+                                                <p className={styles.bodyText}>{item.likes}{
+                                                    item.likes < 1000 ? "" : "K"
+                                                } likes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>)
+                    }
                 </div>
+
 
             </div>
             <RightLayout/>

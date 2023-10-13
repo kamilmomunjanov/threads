@@ -1,10 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import styles from "./Layout.module.css";
 import {allUser} from "../../redux/reducers/allUserSlice";
 import {followUser} from "../../redux/reducers/followByUserSlice";
 import user from "../images/svg/main/unknown.svg";
 import {useDispatch, useSelector} from "react-redux";
 import followYouSlice, {followYou} from "../../redux/reducers/followYouSlice";
+
+import {followMe} from "../../redux/reducers/followSlice";
+import {useNavigate} from "react-router-dom";
+import {oneUser} from "../../redux/reducers/profilUserSlice";
 
 
 const RightLayout = () => {
@@ -14,6 +18,16 @@ const RightLayout = () => {
     const {dataF} = useSelector((store) => store.followYouSlice)
     const {data: followMe} = useSelector((store) => store.followSlice)
     const {data: followUserDone} = useSelector((store) => store.followByUserSlice)
+    const navigate = useNavigate()
+    const follows = JSON.parse(JSON.stringify(dataF))
+    const [follow, setFollow] = useState(follows)
+
+
+
+
+    const oneUserProfile = (username) => {
+        dispatch(oneUser({username}))
+    }
 
     useEffect(() => {
         dispatch(allUser())
@@ -26,11 +40,8 @@ const RightLayout = () => {
 
     function handleFollowUser(id) {
         dispatch(followUser({id}))
-
     }
 
-    console.log(dataF?.following)
-    console.log(data?.results)
 
 
     // const filteredButtons = dataF?.following?.some((item) => item.follows === data.username);
@@ -65,7 +76,11 @@ const RightLayout = () => {
                                     : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
                             }
                             <div>
-                                <h4 className={styles.title}>{item.username}</h4>
+                                <h4 className={styles.title} onClick={(e) => {
+                                    e.stopPropagation()
+                                    oneUserProfile(item.username)
+                                    navigate("/home/other-user")
+                                }}>{item.username}</h4>
                                 <p className={styles.subtitle}>
                                 {dataF?.following?.some((user) => user.follows === item.username) ? "Follows you" : "Unfollows you"}
                                 </p>
@@ -74,7 +89,9 @@ const RightLayout = () => {
 
                         <button type="button" onClick={() => {
                             handleFollowUser(item.user)
-                        }} className={styles.btn}>
+                        }} className={
+                            dataF?.following?.some((user) => user.follows === item.username) ? `${styles.btn}` : `${styles.button} ${styles.btn}`
+                            }>
                             {dataF?.following?.some((user) => user.follows === item.username) ? "Following" : "Follow"}
                         </button>
 

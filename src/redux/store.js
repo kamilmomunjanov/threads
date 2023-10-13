@@ -11,6 +11,9 @@ import followYouSlice from "./reducers/followYouSlice";
 import otherProfileSlice from "./reducers/otherProfile";
 import allUserSlice from "./reducers/allUserSlice";
 import followByUserSlice from "./reducers/followByUserSlice";
+import profileUserSlice from "./reducers/profilUserSlice";
+import threadsFollowingSlice from "./reducers/threadsFollowing";
+import likeSlice from "./reducers/likeSlice";
 import {rememberReducer, rememberEnhancer} from "redux-remember";
 
 
@@ -27,7 +30,10 @@ const rootReducer = combineReducers({
     otherProfileSlice,
     followYouSlice,
     allUserSlice,
-    followByUserSlice
+    followByUserSlice,
+    profileUserSlice,
+    threadsFollowingSlice,
+    likeSlice
 })
 
 const reducer = rememberReducer(rootReducer)

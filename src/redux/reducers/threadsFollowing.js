@@ -3,11 +3,11 @@ import instance from "../../config/axios.js";
 import axios from "axios";
 
 
-export const allUser = createAsyncThunk(
-    "get/allUser",
+export const threadsFollowing = createAsyncThunk(
+    "get/threadsFollowing",
     async (_, {rejectWithValue}) => {
         try {
-            const response = await instance.get("user/profile/?limit=25&offset=0",
+            const response = await instance.get(`thread/following-feed/`,
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
                 })
@@ -29,8 +29,8 @@ export const allUser = createAsyncThunk(
 
 
 
-const allUserSlice = createSlice({
-    name:"allUser",
+const threadsFollowingSlice = createSlice({
+    name:"followUser",
     initialState:{
         data:null,
         status:"",
@@ -41,15 +41,15 @@ const allUserSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(allUser.pending, (state) => {
+            .addCase(threadsFollowing.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(allUser.fulfilled, (state, action) => {
+            .addCase(threadsFollowing.fulfilled, (state, action) => {
                 state.status = "done"
                 state.data = action.payload
             })
-            .addCase(allUser.rejected, (state, action) => {
+            .addCase(threadsFollowing.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
@@ -57,4 +57,4 @@ const allUserSlice = createSlice({
 })
 
 
-export default  allUserSlice.reducer;
+export default  threadsFollowingSlice.reducer;

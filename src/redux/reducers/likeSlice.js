@@ -3,11 +3,11 @@ import instance from "../../config/axios.js";
 import axios from "axios";
 
 
-export const allUser = createAsyncThunk(
-    "get/allUser",
-    async (_, {rejectWithValue}) => {
+export const likeThread = createAsyncThunk(
+    "post/likeThread",
+    async ({id}, {rejectWithValue}) => {
         try {
-            const response = await instance.get("user/profile/?limit=25&offset=0",
+            const response = await instance.post(`thread/${id}/like/`,null,
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
                 })
@@ -17,6 +17,7 @@ export const allUser = createAsyncThunk(
                 throw new Error("Ошибка при запросе")
             }
 
+            window.localStorage.setItem("like", response.data)
             return response.data
 
         }catch (err) {
@@ -29,10 +30,10 @@ export const allUser = createAsyncThunk(
 
 
 
-const allUserSlice = createSlice({
-    name:"allUser",
+const likeSlice = createSlice({
+    name:"likeThread",
     initialState:{
-        data:null,
+        likeDone:null,
         status:"",
         error:"",
     },
@@ -41,15 +42,15 @@ const allUserSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(allUser.pending, (state) => {
+            .addCase(likeThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(allUser.fulfilled, (state, action) => {
+            .addCase(likeThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state.likeDone = action.payload
             })
-            .addCase(allUser.rejected, (state, action) => {
+            .addCase(likeThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
@@ -57,4 +58,4 @@ const allUserSlice = createSlice({
 })
 
 
-export default  allUserSlice.reducer;
+export default  likeSlice.reducer;

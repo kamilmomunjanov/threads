@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import styles from "./OtherUser.module.css";
 import Layout from "../../../Layout/Layout";
 import avatar from "../../../images/png/profilePhoto.png";
@@ -15,28 +15,66 @@ import send from "../../../images/svg/icons/Send.svg";
 import woman from "../../../images/png/AvatarGirl.png";
 import ProfileModal from "../../../Profile/ProfilePage/ProfileModal";
 import OtherProfileModal from "./OtherProfileModal";
+import {useDispatch, useSelector} from "react-redux";
+import ModalListFollow from "../../../Profile/ProfilePage/ProfileModaListFollow/ModalListFollow";
+import user from "../../../images/svg/main/unknown.svg";
+import {followUser} from "../../../../redux/reducers/followByUserSlice";
+import {followYou} from "../../../../redux/reducers/followYouSlice";
+import {oneUser} from "../../../../redux/reducers/profilUserSlice";
+
 
 const OtherUser = ({modal, setModal}) => {
     const [modalPage, setModalPage] = useState(false)
+    const [modalFollow, setModalFollow] = useState(false)
+    const {data} = useSelector((store) => store.profileUserSlice)
+    const {data:followMe} = useSelector((store) => store.followSlice)
+    const {dataF} = useSelector((store) => store.followYouSlice)
+    const dispatch = useDispatch()
+
+    function handleFollowUser(id) {
+        dispatch(followUser({id}))
+    }
+    useEffect(() => {
+        dispatch(followYou())
+    }, [])
+
+    useEffect(() => {
+        dispatch(oneUser())
+    }, [])
+
+
+
     return (
         <div className={styles.profilePage}>
             <Layout/>
             <div className={styles.loginPage__right}>
                 <div className={styles.info}>
                     <div className={styles.information}>
-                        <img src={profilePhoto} alt="Avatar"/>
+                        {
+                            data?.photo
+                            ? <img style={{width:"150px",height:"150px",borderRadius:"50%"}} src={data?.photo} alt="Avatar"/>
+                                : <img style={{width:"150px",height:"150px",borderRadius:"50%"}} src={user} alt=""/>
+                        }
+
                         <div className={styles.aboutUser}>
-                            <h2 className={styles.title}>Alex Elle</h2>
-                            <p className={styles.subtitle}>alex_elle
+                            <h2 className={styles.title}>{data?.username}</h2>
+                            <p className={styles.subtitle}>{data?.name}
                                 <a className={styles.threadsNet} target="_blank"
                                    href="https://www.threads.net/">threads.net</a>
                             </p>
-                            <p>153K followers</p>
+                            <p onClick={() => setModalFollow(true)} className={styles.followers}>{data?.number_of_followers}{
+                                data?.number_of_followers < 1000 ? "" : "K"
+                            } followers</p>
+                            <ModalListFollow modal={modalFollow} setModal={setModalFollow}/>
                         </div>
                     </div>
                 </div>
                 <div className={styles.buttons}>
-                    <button className={styles.btn}>Follow</button>
+                    <button type="button" className={styles.btn} onClick={() => {
+                        handleFollowUser(data.user)
+                    }}>
+                        {dataF?.following?.some((user) => user.follows === data?.username) ? "Following" : "Follow"}
+                    </button>
                     <img onClick={() => setModalPage(true)} className={styles.threeDot} src={dot} alt="dot"/>
                     <OtherProfileModal modal={modalPage} setModal={setModalPage}/>
                 </div>
