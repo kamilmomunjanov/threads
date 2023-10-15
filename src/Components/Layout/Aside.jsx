@@ -14,6 +14,7 @@ import {oneUser} from "../../redux/reducers/profilUserSlice";
 
 const Aside = ({aside, setAside}) => {
     const dispatch = useDispatch()
+    const [triggerEffect, setTriggerEffect] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const {_data} = useSelector((store) => store.profileSlice)
@@ -32,10 +33,12 @@ const Aside = ({aside, setAside}) => {
 
     useEffect(() => {
         dispatch(followYou())
-    }, [])
+        setTriggerEffect(false)
+    }, [triggerEffect])
 
     function handleFollowUser(id) {
         dispatch(followUser({id}))
+        setTriggerEffect(true)
     }
 
 
@@ -54,7 +57,10 @@ const Aside = ({aside, setAside}) => {
     //     console.log(results)
     // };
 
-    const handleInput = data?.results?.filter((item) => item.username.includes(searchTerm))
+
+    const lowercaseSearchTerm = searchTerm.toLowerCase()
+    const handleInput = data?.results?.filter((item) => item.username.toLowerCase().includes(lowercaseSearchTerm))
+    console.log(handleInput)
 
 
     const oneUserProfile = (username) => {

@@ -20,6 +20,7 @@ const ModalListFollow = ({modal, setModal}) => {
 
     const dispatch = useDispatch()
     const {data: allUserGet} = useSelector((store) => store.allUserSlice)
+    const [triggerEffect, setTriggerEffect] = useState(false);
     const {data} = useSelector((store) => store.followSlice)
     const {dataF} = useSelector((store) => store.followYouSlice)
     const {_data} = useSelector((store) => store.otherProfileSlice)
@@ -36,7 +37,8 @@ const ModalListFollow = ({modal, setModal}) => {
 
     useEffect(() => {
         dispatch(followMe())
-    }, [])
+        setTriggerEffect(false)
+    }, [triggerEffect])
 
     useEffect(() => {
         dispatch(allUser())
@@ -44,13 +46,25 @@ const ModalListFollow = ({modal, setModal}) => {
 
     useEffect(() => {
         dispatch(followYou())
-    }, [])
+        setTriggerEffect(false)
+    }, [triggerEffect])
 
     function handleFollowUser(id) {
         dispatch(followUser({id}))
-        dispatch(followYou())
-        dispatch(followMe())
+        setTriggerEffect(true)
     }
+
+
+    const allUserThreads = allUserGet?.results?.map(item => item.username)
+    const allFollowsThreads = dataF?.following?.map((user) => user.follows)
+    const followers = data?.following?.map(item => item.followers)
+    const handleInput = allUserGet?.results?.filter(item => allFollowsThreads.includes(item.username))
+    const myFollowers = allUserGet?.results?.filter(item => followers.includes(item.username))
+
+    console.log(allUserThreads)
+    console.log(followers)
+    console.log(allFollowsThreads)
+    console.log(handleInput)
 
 
     return (
@@ -83,19 +97,18 @@ const ModalListFollow = ({modal, setModal}) => {
 
                 <div className={active === 1 ? "tabs__content active" : "tabs__content"}>
                     {
-                        data?.following?.every((user) => user.followers) ?
-                        data?.following?.map((item,idx)=>
+                        myFollowers.map((item,idx)=>
                             <div className="followers__list">
                                 <div className="user">
                                     {
-                                        allUserGet?.results?.find((user) => user.photo)?.photo
+                                        item.photo
                                             ? <img style={{
                                                 cursor: "pointer",
                                                 width: "40px",
                                                 height: "40px",
                                                 borderRadius: "50%"
                                             }} className="user__image"
-                                                   src={allUserGet?.results?.find((user) => user.username === item.followers)?.photo}
+                                                   src={item.photo}
                                                    alt="User-photo"/>
                                             : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
                                     }
@@ -103,78 +116,78 @@ const ModalListFollow = ({modal, setModal}) => {
                                         <h4 className="user__info-title"
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                oneUserProfile(allUserGet?.results?.find((user) => user.username === item.followers)?.username)
+                                                oneUserProfile(item.username)
                                                 navigate("/home/other-user")
                                             }}
-                                        >{item.followers}</h4>
+                                        >{item.username}</h4>
                                         <p className="user__info-subtitle">{
-                                            allUserGet?.results?.some((user) => user.username === item.followers)
+                                           item
                                                 ?
-                                                <p className="user__info-subtitle">{allUserGet?.results?.find((user) => user.username === item.followers)?.bio}</p>
+                                                <p className="user__info-subtitle">{item.bio}</p>
                                                 : ""
                                         }</p>
                                     </div>
                                 </div>
                                 <button className={
-                                    allUserGet?.results?.some((user) => user.username === item.followers) ? `followers__list-btn` : `followers__list-btn follow`
+                                    dataF?.following?.some((user) => user.follows === item.username) ? `followers__list-btn` : `followers__list-btn follow`
                                 } onClick={() => {
-                                    handleFollowUser(allUserGet?.results?.find((user) => user.user)?.user)
+                                    handleFollowUser(item.user)
                                 }}>{
-                                    allUserGet?.results?.some((user) => user.username === item.followers) ? "Following" : "Follow"
+                                    dataF?.following?.some((user) => user.follows === item.username) ? "Following" : "Follow"
                                 }</button>
                             </div>
                         )
-                            : ""
                     }
                 </div>
 
 
                 <div className={active === 2 ? "tabs__content active" : "tabs__content"}>
                     {
-                        dataF?.following?.every((user) => user.follows) ?
-                        dataF?.following?.map((item, idx) =>
-                            <div className="followers__list">
-                                <div className="user">
 
-                                    {
-                                        allUserGet?.results?.find((user) => user.username === item.follows)?.photo
-                                            ? <img style={{
-                                                cursor: "pointer",
-                                                width: "40px",
-                                                height: "40px",
-                                                borderRadius: "50%"
-                                            }} className="user__image"
-                                                   src={allUserGet?.results?.find((user) => user.username === item.follows)?.photo}
-                                                   alt="User-photo"/>
-                                            : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
-                                    }
-                                    <div className="user__info">
-                                        <h4 className="user__info-title"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                navigate("/home/other-user")
-                                            }}
-                                        >{item.follows}</h4>
+                        handleInput?.map((item, idx) =>
+                                <div className="followers__list">
+                                    <div className="user">
+
                                         {
-                                            allUserGet?.results?.some((user) => user.username === item.follows)
-                                                ?
-                                                <p className="user__info-subtitle">{allUserGet?.results?.find((user) => user.username === item.follows)?.bio}</p>
-                                                : ""
+                                            item?.photo
+                                                ? <img style={{
+                                                    cursor: "pointer",
+                                                    width: "40px",
+                                                    height: "40px",
+                                                    borderRadius: "50%"
+                                                }} className="user__image"
+                                                       src={item?.photo}
+                                                       alt="User-photo"/>
+                                                : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
                                         }
+                                        <div className="user__info">
+                                            <h4 className="user__info-title"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    navigate("/home/other-user")
+                                                }}
+                                            >{item.username}</h4>
+                                            {
+                                                item
+                                                    ?
+                                                    <p className="user__info-subtitle">{item.bio}</p>
+                                                    : ""
+                                            }
 
+                                        </div>
                                     </div>
+                                    <button className={
+                                        dataF?.following?.some((user) => user.follows === item.username) ? `followers__list-btn` : `followers__list-btn follow`
+                                    } onClick={() => {
+                                        handleFollowUser(item.user)
+                                    }}>{
+                                        dataF?.following?.some((user) => user.follows === item.username) ? "Following" : "Follow"
+                                    }</button>
                                 </div>
-                                <button className={
-                                    allUserGet?.results?.some((user) => user.username === item.follows) ? `followers__list-btn` : `followers__list-btn follow`
-                                } onClick={() => {
-                                    handleFollowUser(allUserGet?.results?.find((user) => user.user)?.user)
-                                }}>{
-                                    allUserGet?.results?.some((user) => user.username === item.follows) ? "Following" : "Follow"
-                                }</button>
-                            </div>
-                        )
-                            : ""
+                            )
                     }
+
+
                 </div>
 
 

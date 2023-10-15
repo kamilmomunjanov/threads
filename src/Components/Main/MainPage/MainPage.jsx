@@ -25,6 +25,7 @@ import axios from "axios";
 
 const MainPage = ({modal, setModal}) => {
     const [activeTab, setActiveTab] = useState(1)
+    const [triggerEffect, setTriggerEffect] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
     const [readOnly, setReadOnly] = useState("Anyone can reply")
     const navigate = useNavigate()
@@ -48,7 +49,8 @@ const MainPage = ({modal, setModal}) => {
 
     useEffect(() => {
         dispatch(threadsFollowing())
-    }, [])
+            }, [])
+
 
     console.log(threadFollow)
 
@@ -87,6 +89,7 @@ const MainPage = ({modal, setModal}) => {
             formData.append("photos", photo)
             dispatch(createThreads(formData))
             setText("")
+            setTriggerEffect(true)
         } catch (error) {
             console.warn(error)
             alert("Ошибка при добавлении треда")
@@ -125,7 +128,8 @@ const MainPage = ({modal, setModal}) => {
 
     useEffect(() => {
         dispatch(getThreads())
-    }, [])
+        setTriggerEffect(false)
+    }, [triggerEffect])
 
 
 

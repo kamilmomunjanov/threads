@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState, useLayoutEffect} from 'react';
 import styles from "./Layout.module.css";
 import {allUser} from "../../redux/reducers/allUserSlice";
 import {followUser} from "../../redux/reducers/followByUserSlice";
@@ -14,6 +14,7 @@ import {oneUser} from "../../redux/reducers/profilUserSlice";
 const RightLayout = () => {
     const dispatch = useDispatch()
     const {data} = useSelector((store) => store.allUserSlice)
+    const [triggerEffect, setTriggerEffect] = useState(false);
     const {_data} = useSelector((store) => store.profileSlice)
     const {dataF} = useSelector((store) => store.followYouSlice)
     const {data: followMe} = useSelector((store) => store.followSlice)
@@ -29,17 +30,24 @@ const RightLayout = () => {
         dispatch(oneUser({username}))
     }
 
+    // useLayoutEffect(() => {
+    //     // Выполнять синхронные действия после изменений DOM
+    //     dispatch(followYou())
+    // }, [/* зависимости */dataF]);
+
     useEffect(() => {
         dispatch(allUser())
     }, [])
 
     useEffect(() => {
         dispatch(followYou())
-    }, [])
+        setTriggerEffect(false)
+    }, [triggerEffect])
 
 
     function handleFollowUser(id) {
         dispatch(followUser({id}))
+        setTriggerEffect(true)
     }
 
 
