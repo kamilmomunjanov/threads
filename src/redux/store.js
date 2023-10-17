@@ -13,7 +13,11 @@ import allUserSlice from "./reducers/allUserSlice";
 import followByUserSlice from "./reducers/followByUserSlice";
 import profileUserSlice from "./reducers/profilUserSlice";
 import threadsFollowingSlice from "./reducers/threadsFollowing";
+import followerOtherUserSlice from "./reducers/followersOtherUser";
 import likeSlice from "./reducers/likeSlice";
+import getThreadIdSlice from "./reducers/getThreadsIdslice";
+import commentSlice from "./reducers/commentSlice";
+import repostSlice from "./reducers/repostSlice";
 import {rememberReducer, rememberEnhancer} from "redux-remember";
 
 
@@ -33,12 +37,16 @@ const rootReducer = combineReducers({
     followByUserSlice,
     profileUserSlice,
     threadsFollowingSlice,
-    likeSlice
+    likeSlice,
+    followerOtherUserSlice,
+    getThreadIdSlice,
+    commentSlice,
+    repostSlice
 })
 
 const reducer = rememberReducer(rootReducer)
 
-const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice", "threadSlice" ]
+const rememberedKeys = ["registerSlice", "signInSlice", "forgotPasswordSlice", "verificationSlice", "profileSlice", "threadSlice","profileUserSlice", "getThreadIdSlice","commentSlice" ]
 
 
 const store = configureStore({

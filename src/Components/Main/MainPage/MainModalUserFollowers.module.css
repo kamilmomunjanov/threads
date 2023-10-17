@@ -1,0 +1,201 @@
+
+* {
+    font-family: SF Pro Display, sans-serif;
+}
+
+.modalFollow {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 8;
+    transition: .5s;
+}
+
+.modalFollow.active {
+    opacity: 1;
+    pointer-events: all;
+    cursor: auto;
+}
+
+.modalFollow__content {
+    padding: 80px 32px 44px;
+    border-radius: 13px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    height: 547px;
+    width: 600px;
+    transform: scale(0.5);
+    transition: .5s all;
+    position: relative;
+    overflow: auto;
+}
+
+
+.closeIcon {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    cursor: pointer;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 12px; /* ширина для вертикального скролла */
+    height: 12px; /* высота для горизонтального скролла */
+    background-color: transparent;
+}
+
+/* ползунок скроллбара */
+::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 9em;
+    box-shadow: inset 1px 1px 10px #f3faf7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999999;
+
+}
+
+
+
+
+.modalFollow__content.active {
+    transform: scale(1);
+}
+
+
+
+.header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    cursor: pointer;
+    padding-bottom: 10px;
+    position: relative;
+    border-bottom: 3px solid #D9D9D9;
+}
+
+
+.header__title {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 22px;
+    color: #141414;
+}
+
+
+
+.searchField {
+    width: calc(100% - 40px);
+    background-color: #EFEFEF;
+    padding: 13px 20px;
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.inputField {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #3C3C43;
+    border: none;
+    background-color: #EFEFEF;
+    outline: none;
+    width: 80%;
+}
+
+.searchImg {
+    margin-top: -3px;
+    cursor: pointer;
+}
+
+.form__btn {
+    border: none;
+    padding: 0;
+}
+
+
+.tabs__content {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 40px);
+    padding: 0 20px;
+    row-gap: 20px;
+}
+
+.followers__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    width: 400px;
+}
+
+.user__image {
+    cursor: pointer;
+}
+
+.user__info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+}
+
+.userInfoTitle, .userInfoSubtitle {
+    margin: 0;
+    cursor: pointer;
+}
+
+.userInfoTitle {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px;
+    color: #141414;
+}
+
+.userInfoSubtitle {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #999999;
+}
+
+.followers__listBtn {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #999999;
+    width: 200px;
+    padding: 6px 0;
+    background-color: transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid #D9D9D9;
+}
+
+.follow {
+    color: black;
+}
+
+

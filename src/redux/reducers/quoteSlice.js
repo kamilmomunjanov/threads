@@ -3,12 +3,18 @@ import instance from "../../config/axios.js";
 import axios from "axios";
 
 
-export const createThreads = createAsyncThunk(
-    "post/threadCreate",
-    async (formData, {rejectWithValue}) => {
+export const quoteThread = createAsyncThunk(
+    "post/quote",
+    async ({id, content}, {rejectWithValue}) => {
         try {
-            const response = await instance.post("thread/create-thread/",
-                formData,
+            const response = await instance.post(`thread/quote/${id}`,
+                {
+                    additional_text: "string",
+                    thread: {
+                        content: "string"
+
+                    }
+                },
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
                 })
@@ -18,27 +24,6 @@ export const createThreads = createAsyncThunk(
                 throw new Error("Ошибка при запросе")
             }
 
-            return response.data
-
-        }catch (err) {
-            return rejectWithValue(err.message)
-        }
-    }
-)
-
-export const getThreads = createAsyncThunk(
-    "get/getThreads",
-    async (_, {rejectWithValue}) => {
-        try {
-            const response = await instance.get("thread/for-you/",
-                {
-                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
-                })
-            console.log(response.data)
-
-            if (response.statusText !== "OK") {
-                throw new Error("Ошибка при запросе")
-            }
 
             return response.data
 
@@ -48,11 +33,14 @@ export const getThreads = createAsyncThunk(
     }
 )
 
-export const deleteThreads = createAsyncThunk(
-    "delete/getThreads",
+
+
+
+export const getQuoteThread = createAsyncThunk(
+    "get/quote",
     async ({id}, {rejectWithValue}) => {
         try {
-            const response = await instance.delete(`thread/thread/${id}/`,
+            const response = await instance.get(`thread/quote/${id}`,
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
                 })
@@ -61,6 +49,30 @@ export const deleteThreads = createAsyncThunk(
             if (response.statusText !== "OK") {
                 throw new Error("Ошибка при запросе")
             }
+
+
+            return response.data
+
+        }catch (err) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
+export const deleteQuoteThread = createAsyncThunk(
+    "delete/quote",
+    async ({id}, {rejectWithValue}) => {
+        try {
+            const response = await instance.delete(`thread/quote/${id}`,
+                {
+                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+                })
+            console.log(response.data)
+
+            if (response.statusText !== "OK") {
+                throw new Error("Ошибка при запросе")
+            }
+
 
             return response.data
 
@@ -73,10 +85,11 @@ export const deleteThreads = createAsyncThunk(
 
 
 
-const threadSlice = createSlice({
-    name:"thread",
+
+const quoteSlice = createSlice({
+    name:"quote",
     initialState:{
-        data:null,
+        _data:null,
         status:"",
         error:"",
     },
@@ -85,44 +98,45 @@ const threadSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(createThreads.pending, (state) => {
+            .addCase(quoteThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(createThreads.fulfilled, (state, action) => {
+            .addCase(quoteThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state._data = action.payload
             })
-            .addCase(createThreads.rejected, (state, action) => {
+            .addCase(quoteThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
-            .addCase(getThreads.pending, (state) => {
+            .addCase(getQuoteThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(getThreads.fulfilled, (state, action) => {
+            .addCase(getQuoteThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state._data = action.payload
             })
-            .addCase(getThreads.rejected, (state, action) => {
+            .addCase(getQuoteThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
-            .addCase(deleteThreads.pending, (state) => {
+            .addCase(deleteQuoteThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(deleteThreads.fulfilled, (state, action) => {
+            .addCase(deleteQuoteThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state._data = action.payload
             })
-            .addCase(deleteThreads.rejected, (state, action) => {
+            .addCase(deleteQuoteThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
+
     }
 })
 
 
-export default  threadSlice.reducer;
+export default  quoteSlice.reducer;

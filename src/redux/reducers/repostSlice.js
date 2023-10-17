@@ -3,20 +3,26 @@ import instance from "../../config/axios.js";
 import axios from "axios";
 
 
-export const createThreads = createAsyncThunk(
-    "post/threadCreate",
-    async (formData, {rejectWithValue}) => {
+export const repostThread = createAsyncThunk(
+    "post/repost",
+    async ({id, content}, {rejectWithValue}) => {
         try {
-            const response = await instance.post("thread/create-thread/",
-                formData,
+            const response = await instance.post(`thread/repost/${id}`,
                 {
-                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
-                })
+                    thread: {
+                content: content
+
+            }
+                },
+                {
+                headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+            })
             console.log(response.data)
 
             if (response.statusText !== "OK") {
                 throw new Error("Ошибка при запросе")
             }
+
 
             return response.data
 
@@ -26,33 +32,14 @@ export const createThreads = createAsyncThunk(
     }
 )
 
-export const getThreads = createAsyncThunk(
-    "get/getThreads",
-    async (_, {rejectWithValue}) => {
-        try {
-            const response = await instance.get("thread/for-you/",
-                {
-                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
-                })
-            console.log(response.data)
 
-            if (response.statusText !== "OK") {
-                throw new Error("Ошибка при запросе")
-            }
 
-            return response.data
 
-        }catch (err) {
-            return rejectWithValue(err.message)
-        }
-    }
-)
-
-export const deleteThreads = createAsyncThunk(
-    "delete/getThreads",
+export const getRepostThread = createAsyncThunk(
+    "get/repost",
     async ({id}, {rejectWithValue}) => {
         try {
-            const response = await instance.delete(`thread/thread/${id}/`,
+            const response = await instance.get(`thread/repost/${id}`,
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
                 })
@@ -61,6 +48,30 @@ export const deleteThreads = createAsyncThunk(
             if (response.statusText !== "OK") {
                 throw new Error("Ошибка при запросе")
             }
+
+
+            return response.data
+
+        }catch (err) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
+export const deleteRepostThread = createAsyncThunk(
+    "delete/repost",
+    async ({id}, {rejectWithValue}) => {
+        try {
+            const response = await instance.delete(`thread/repost/${id}`,
+                {
+                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+                })
+            console.log(response.data)
+
+            if (response.statusText !== "OK") {
+                throw new Error("Ошибка при запросе")
+            }
+
 
             return response.data
 
@@ -73,10 +84,11 @@ export const deleteThreads = createAsyncThunk(
 
 
 
-const threadSlice = createSlice({
-    name:"thread",
+
+const repostSlice = createSlice({
+    name:"repost",
     initialState:{
-        data:null,
+        _data:null,
         status:"",
         error:"",
     },
@@ -85,44 +97,45 @@ const threadSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(createThreads.pending, (state) => {
+            .addCase(repostThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(createThreads.fulfilled, (state, action) => {
+            .addCase(repostThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state._data = action.payload
             })
-            .addCase(createThreads.rejected, (state, action) => {
+            .addCase(repostThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
-            .addCase(getThreads.pending, (state) => {
+            .addCase(getRepostThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(getThreads.fulfilled, (state, action) => {
+            .addCase(getRepostThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state._data = action.payload
             })
-            .addCase(getThreads.rejected, (state, action) => {
+            .addCase(getRepostThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
-            .addCase(deleteThreads.pending, (state) => {
+            .addCase(deleteRepostThread.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(deleteThreads.fulfilled, (state, action) => {
+            .addCase(deleteRepostThread.fulfilled, (state, action) => {
                 state.status = "done"
-                state.data = action.payload
+                state._data = action.payload
             })
-            .addCase(deleteThreads.rejected, (state, action) => {
+            .addCase(deleteRepostThread.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
+
     }
 })
 
 
-export default  threadSlice.reducer;
+export default  repostSlice.reducer;

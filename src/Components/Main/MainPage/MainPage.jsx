@@ -13,20 +13,22 @@ import styles from "./MainPage.module.css";
 import RightLayout from "../../Layout/RightLayout";
 import MainModal from "./Modal/MainModal";
 import {useDispatch, useSelector} from "react-redux";
-import {createThreads, getThreads} from "../../../redux/reducers/threadSlice";
+import {createThreads, deleteThreads, getThreads} from "../../../redux/reducers/threadSlice";
 import {useForm} from "react-hook-form";
 import user from "../../images/svg/main/unknown.svg";
 import {oneUser} from "../../../redux/reducers/profilUserSlice";
 import {threadsFollowing} from "../../../redux/reducers/threadsFollowing";
-import {likeThread} from "../../../redux/reducers/likeSlice";
 import activity  from "../../UI/svg1/like.svg";
 import axios from "axios";
+import {getTheadId} from "../../../redux/reducers/getThreadsIdslice";
+import {profileUser} from "../../../redux/reducers/profileSlice";
+import {repostThread} from "../../../redux/reducers/repostSlice";
+
 
 
 const MainPage = ({modal, setModal}) => {
     const [activeTab, setActiveTab] = useState(1)
-    const [triggerEffect, setTriggerEffect] = useState(false);
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const [triggerEffects, setTriggerEffects] = useState(false);
     const [readOnly, setReadOnly] = useState("Anyone can reply")
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -37,9 +39,7 @@ const MainPage = ({modal, setModal}) => {
     const {data: userOne} = useSelector((store) => store.profileUserSlice)
     const {data: threadFollow} = useSelector((store) => store.threadsFollowingSlice)
     const {likeDone} = useSelector((store) => store.likeSlice)
-    const [threads, setThreads] = useState()
-    const [text, setText] = useState("")
-    const [getLike, setGetLike] = useState(null)
+    const [likedThreads, setLikedThreads] = useState([])
     const {
         register,
         handleSubmit,
@@ -51,36 +51,38 @@ const MainPage = ({modal, setModal}) => {
         dispatch(threadsFollowing())
             }, [])
 
+    useEffect(()=>{
+        dispatch(profileUser())
+    },[])
 
-    console.log(threadFollow)
 
     const oneUserProfile = (username) => {
         dispatch(oneUser({username}))
     }
 
     const handleLike = (id) => {
-        axios.post(`http://aldiyar-backender.org.kg/api/thread/${id}/like/`,null,
-        {
-            headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
-        }).then(({data}) => console.log(data))
-
+        if (likedThreads.includes(id)) {
+            // Пользователь уже лайкнул этот тред, выполните действие отмены лайка
+            axios.post(`http://aldiyar-backender.org.kg/api/thread/${id}/like/`, null, {
+                headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+            }).then(({data}) => {
+                setLikedThreads(prevLikedThreads => prevLikedThreads.filter(threadId => threadId !== id));
+            });
+        } else {
+            // Пользователь еще не лайкнул этот тред, выполните действие лайка
+            axios.post(`http://aldiyar-backender.org.kg/api/thread/${id}/like/`, null, {
+                headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
+            }).then(({data}) => {
+                setLikedThreads(prevLikedThreads => [...prevLikedThreads, id]);
+            });
+        }
+        setTriggerEffects(true)
 
     }
 
-    // const datetimeString = data.created
-    //
-    //
-    // const datetime = new Date(datetimeString);
-    //
-    // const hours = datetime.getUTCHours().toString().padStart(2, '0');
-    // const minutes = datetime.getUTCMinutes().toString().padStart(2, '0');
-    // const seconds = datetime.getUTCSeconds().toString().padStart(2, '0');
-    //
-    // const timeString = `${hours}:${minutes}:${seconds}`;
 
 
     const handleSubmitThread = (data, e) => {
-        console.log(imageAddRef.current.files[0])
         try {
             const content = data.text
             const photo = imageAddRef.current.files[0]
@@ -88,50 +90,39 @@ const MainPage = ({modal, setModal}) => {
             formData.append("content", content);
             formData.append("photos", photo)
             dispatch(createThreads(formData))
-            setText("")
-            setTriggerEffect(true)
+            data.text = ""
+            setTriggerEffects(true)
         } catch (error) {
             console.warn(error)
             alert("Ошибка при добавлении треда")
         }
     }
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setCurrentTime(new Date());
-    //     }, 1000);
-    //
-    //     return () => clearInterval(interval);
-    // }, []);
-    //
-    // const hour = currentTime.getHours().toString().padStart(2, '0');
-    // const minute = currentTime.getMinutes().toString().padStart(2, '0');
-    // const second = currentTime.getSeconds().toString().padStart(2, '0');
-    // const timeToday = `${hour}:${minute}:${second}`;
 
-
-    // const startDate = new Date(); // Начальная дата
-    // const endDate = new Date();   // Конечная дата
-    //
-    // startDate.setHours(datetime.getUTCHours()); // Устанавливаем часы начальной даты
-    // endDate.setHours(currentTime.getHours());   // Устанавливаем часы конечной даты
-    //
-    // const timeDifference = endDate - startDate; // Разница в миллисекундах
-    // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // Переводим в часы
-    // const minutesDifference = hoursDifference * 60; // Переводим в минуты
-    //
-    // const hoursMinus = hoursDifference
-    // const minutesMinus = hoursDifference % 60;
-    //
-    // const displayTime = hoursMinus > 0 ? `${hoursMinus}h` : `${minutesMinus}m`;
 
 
     useEffect(() => {
         dispatch(getThreads())
-        setTriggerEffect(false)
-    }, [triggerEffect])
+        setTriggerEffects(false)
+    }, [triggerEffects])
 
 
+    const handleGetThead = (id) => {
+        dispatch(getTheadId({id}))
+    }
+
+    const deleteThread = (id) => {
+        dispatch(deleteThreads({id}))
+        setTriggerEffects(true)
+    }
+
+    // const quoteAdd = (id) => {
+    //     const content = data?.map(item => item.content)
+    //     dispatch(repostThread({id, content}))
+    // }
+
+
+    console.log(data)
 
     return (
         <div className={styles.mainPage}>
@@ -153,10 +144,10 @@ const MainPage = ({modal, setModal}) => {
                 <form onSubmit={handleSubmit(handleSubmitThread)} className={styles.threads}>
                     <div className={styles.top}>
                         <div className={styles.writeThreads}>
-                            <img style={{width: "40px", height: "40px", borderRadius: "50%"}} src={_data.photo}
+                            <img style={{width: "40px", height: "40px", borderRadius: "50%"}} src={_data?.photo}
                                  alt="Avatar"/>
                             <div className={styles.createThreads}>
-                                <h4 className={styles.name}>{_data.username}</h4>
+                                <h4 className={styles.name}>{_data?.username}</h4>
                                 <textarea ref={textRef} {...register("text",)} className={styles.textarea}
                                           placeholder="Start a thread..."></textarea>
                             </div>
@@ -184,15 +175,15 @@ const MainPage = ({modal, setModal}) => {
                 <div>
 
                     {
-                        data.map((item) =>
+                        data?.map((item) =>
                             <div className={activeTab === 1 ? "tabs__content active" : "tabs__content"}>
                                 <div className={styles.feed}>
                                     <div className={styles.userPhoto}>
                                         {
-                                            item.author.photo
+                                            item?.author?.photo
                                                 ? <>
                                                     <img style={{width: "40px", height: "40px", borderRadius: "50%"}}
-                                                         src={item.author.photo} alt="Avatar"/>
+                                                         src={item?.author?.photo} alt="Avatar"/>
                                                     <img className={styles.subscribe} src={add} alt="add"/>
                                                 </>
                                                 : <img style={{width: "40px", height: "40px"}} src={user} alt=""/>
@@ -204,22 +195,26 @@ const MainPage = ({modal, setModal}) => {
                                                 e.stopPropagation()
                                                 oneUserProfile(item?.author?.username)
                                                 navigate("/home/other-user")
-                                            }}>{item.author.username}</p>
-                                            <p className={styles.subtitle}>{
-                                                item.created
-                                            }</p>
+                                            }}>{item?.author?.username}</p>
+                                            <p className={styles.subtitle}>5m
+                                                 <span className={styles.dotDelete} onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    e.preventDefault()
+                                                    deleteThread(item?.id)
+                                                }}>...</span>
+                                            </p>
                                         </div>
-                                        <p className={styles.titleText}>{item.content}</p>
+                                        <p className={styles.titleText}>{item?.content}</p>
                                         <div className={styles.contentBot}>
                                             {
-                                                item.photos[0]?.photo
+                                                item?.photos[0]?.photo
                                                     ? <img style={{
                                                         width: "570px",
                                                         height: "316px",
                                                         cursor: "pointer",
                                                         borderRadius: "8px"
                                                     }}
-                                                           src={item.photos[0]?.photo} alt="image"/>
+                                                           src={item?.photos[0]?.photo} alt="image"/>
                                                     : ""
                                             }
 
@@ -230,7 +225,7 @@ const MainPage = ({modal, setModal}) => {
                                                 <Link to="#">
 
                                                     {
-                                                        getLike === "like thread"
+                                                        likedThreads?.includes(item.id)
                                                             ? <img className={styles.activityBtn} src={activity}
                                                                    alt="like" onClick={(e) => {
                                                                 e.preventDefault()
@@ -247,17 +242,26 @@ const MainPage = ({modal, setModal}) => {
 
                                                     </Link>
                                                 <Link to="/home/comment"><img className={styles.activityBtn}
-                                                                              src={comment}
+                                                                              src={comment} onClick={(e) => {
+                                                    e.preventDefault()
+                                                    e.stopPropagation()
+                                                    handleGetThead(item.id)
+                                                    navigate("/home/comment")
+                                                }}
                                                                               alt="comment"/></Link>
-                                                <Link to="#"><img className={styles.activityBtn} src={repost}
-                                                                  alt="repost"/></Link>
+                                                <Link to="#">
+                                                    <img onClick={(e) => {
+                                                        e.preventDefault()
+                                                        e.stopPropagation()
+                                                        // quoteAdd(item.id)
+                                                    }} className={styles.activityBtn} src={repost} alt="repost"/>
+                                                </Link>
                                                 <Link to="#"><img className={styles.activityBtn} src={send}
                                                                   alt="send"/></Link>
                                             </div>
                                             <div className={styles.positionDot}>
                                                 <p className={styles.bodyText}>0 replies</p>
-                                                <span className={styles.dot}>.</span>
-                                                <p className={styles.bodyText}>{item.likes}{
+                                                <p className={styles.bodyText}>{item?.likes}{
                                                     item.likes < 1000 ? "" : "K"
                                                 } likes</p>
                                             </div>
@@ -290,10 +294,14 @@ const MainPage = ({modal, setModal}) => {
                                                 e.stopPropagation()
                                                 oneUserProfile(item?.author?.username)
                                                 navigate("/home/other-user")
-                                            }}>{item.author.username}</p>
-                                            <p className={styles.subtitle}>{
-                                                item.created
-                                            }</p>
+                                            }}>{item?.author?.username}</p>
+                                            <p className={styles.subtitle}>5m
+                                                <span className={styles.dotDelete} onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    e.preventDefault()
+                                                    deleteThread(item?.id)
+                                                }}>...</span>
+                                            </p>
                                         </div>
                                         <p className={styles.titleText}>{item.content}</p>
                                         <div className={styles.contentBot}>
@@ -311,16 +319,28 @@ const MainPage = ({modal, setModal}) => {
 
 
                                             <div className={styles.activity}>
-                                                <Link to="#">{
-                                                    getLike === "like thread"
-                                                        ? <img className={styles.activityBtn} src={like}
-                                                               alt="like"/>
-                                                        : <img className={styles.activityBtn} src={activity}
-                                                               alt="like"/>
+                                                {
+                                                    likedThreads?.includes(item.id)
+                                                        ? <img className={styles.activityBtn} src={activity}
+                                                               alt="like" onClick={(e) => {
+                                                            e.preventDefault()
+                                                            e.stopPropagation()
+                                                            handleLike(item.id)
+                                                        }}/>
+                                                        : <img className={styles.activityBtn} src={like}
+                                                               alt="like" onClick={(e) => {
+                                                            e.preventDefault()
+                                                            e.stopPropagation()
+                                                            handleLike(item.id)
+                                                        }}/>
                                                 }
-                                                    </Link>
                                                 <Link to="/home/comment"><img className={styles.activityBtn}
-                                                                              src={comment}
+                                                                              src={comment} onClick={(e) => {
+                                                    e.preventDefault()
+                                                    e.stopPropagation()
+                                                    handleGetThead(item.id)
+                                                    navigate("/home/comment")
+                                                }}
                                                                               alt="comment"/></Link>
                                                 <Link to="#"><img className={styles.activityBtn} src={repost}
                                                                   alt="repost"/></Link>
@@ -330,7 +350,7 @@ const MainPage = ({modal, setModal}) => {
                                             <div className={styles.positionDot}>
                                                 <p className={styles.bodyText}>0 replies</p>
                                                 <span className={styles.dot}>.</span>
-                                                <p className={styles.bodyText}>{item.likes}{
+                                                <p className={styles.bodyText}>{item?.likes}{
                                                     item.likes < 1000 ? "" : "K"
                                                 } likes</p>
                                             </div>

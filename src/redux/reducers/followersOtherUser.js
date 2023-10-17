@@ -3,33 +3,11 @@ import instance from "../../config/axios.js";
 import axios from "axios";
 
 
-export const oneUser = createAsyncThunk(
-    "get/oneUser",
+export const followersOtherUser = createAsyncThunk(
+    "get/followers",
     async ({username}, {rejectWithValue}) => {
         try {
-            const response = await instance.get(`user/profile/${username}/`,
-                {
-                    headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
-                })
-            console.log(response.data)
-
-            if (response.statusText !== "OK") {
-                throw new Error("Ошибка при запросе")
-            }
-
-            return response.data
-
-        }catch (err) {
-            return rejectWithValue(err.message)
-        }
-    }
-)
-
-export const oneUserInfo = createAsyncThunk(
-    "get/oneUser",
-    async (_, {rejectWithValue}) => {
-        try {
-            const response = await instance.get(`user/profile/`,
+            const response = await instance.get(`user/followers/${username}/`,
                 {
                     headers: { Authorization: 'Bearer ' +  window.localStorage.getItem("accessToken") }
                 })
@@ -51,8 +29,8 @@ export const oneUserInfo = createAsyncThunk(
 
 
 
-const profileUserSlice = createSlice({
-    name:"oneUser",
+const followerOtherUserSlice = createSlice({
+    name:"followers",
     initialState:{
         data:null,
         status:"",
@@ -63,15 +41,15 @@ const profileUserSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(oneUser.pending, (state) => {
+            .addCase(followersOtherUser.pending, (state) => {
                 state.status = "loading"
                 state.error = ""
             })
-            .addCase(oneUser.fulfilled, (state, action) => {
+            .addCase(followersOtherUser.fulfilled, (state, action) => {
                 state.status = "done"
                 state.data = action.payload
             })
-            .addCase(oneUser.rejected, (state, action) => {
+            .addCase(followersOtherUser.rejected, (state, action) => {
                 state.status = "error"
                 state.error = action.payload
             })
@@ -79,4 +57,4 @@ const profileUserSlice = createSlice({
 })
 
 
-export default  profileUserSlice.reducer;
+export default  followerOtherUserSlice.reducer;

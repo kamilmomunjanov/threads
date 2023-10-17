@@ -58,13 +58,9 @@ const ModalListFollow = ({modal, setModal}) => {
     const allUserThreads = allUserGet?.results?.map(item => item.username)
     const allFollowsThreads = dataF?.following?.map((user) => user.follows)
     const followers = data?.following?.map(item => item.followers)
-    const handleInput = allUserGet?.results?.filter(item => allFollowsThreads.includes(item.username))
-    const myFollowers = allUserGet?.results?.filter(item => followers.includes(item.username))
+    const handleInput = allUserGet?.results?.filter(item => allFollowsThreads?.includes(item?.username))
+    const myFollowers = allUserGet?.results?.filter(item => followers?.includes(item?.username))
 
-    console.log(allUserThreads)
-    console.log(followers)
-    console.log(allFollowsThreads)
-    console.log(handleInput)
 
 
     return (
@@ -97,7 +93,7 @@ const ModalListFollow = ({modal, setModal}) => {
 
                 <div className={active === 1 ? "tabs__content active" : "tabs__content"}>
                     {
-                        myFollowers.map((item,idx)=>
+                        myFollowers?.map((item,idx)=>
                             <div className="followers__list">
                                 <div className="user">
                                     {

@@ -20,11 +20,14 @@ import ModalListFollow from "../../../Profile/ProfilePage/ProfileModaListFollow/
 import user from "../../../images/svg/main/unknown.svg";
 import {followUser} from "../../../../redux/reducers/followByUserSlice";
 import {followYou} from "../../../../redux/reducers/followYouSlice";
-import {oneUser} from "../../../../redux/reducers/profilUserSlice";
+import {oneUser, oneUserInfo} from "../../../../redux/reducers/profilUserSlice";
+import MainModalUserFollowers from "../MainModalUserFollowers";
+import {followersOtherUser} from "../../../../redux/reducers/followersOtherUser";
 
 
 const OtherUser = ({modal, setModal}) => {
     const [modalPage, setModalPage] = useState(false)
+    const [triggerEffects, setTriggerEffects] = useState(false);
     const [modalFollow, setModalFollow] = useState(false)
     const {data} = useSelector((store) => store.profileUserSlice)
     const {data:followMe} = useSelector((store) => store.followSlice)
@@ -33,14 +36,23 @@ const OtherUser = ({modal, setModal}) => {
 
     function handleFollowUser(id) {
         dispatch(followUser({id}))
+        setTriggerEffects(true)
     }
     useEffect(() => {
         dispatch(followYou())
-    }, [])
+        setTriggerEffects(false)
+    }, [triggerEffects])
 
     useEffect(() => {
         dispatch(oneUser())
-    }, [])
+        setTriggerEffects(false)
+    }, [triggerEffects])
+
+    const oneUserProfile = (username) => {
+        dispatch(followersOtherUser({username}))
+        setTriggerEffects(true)
+    }
+
 
 
 
@@ -58,14 +70,19 @@ const OtherUser = ({modal, setModal}) => {
 
                         <div className={styles.aboutUser}>
                             <h2 className={styles.title}>{data?.username}</h2>
-                            <p className={styles.subtitle}>{data?.name}
+                            <p className={styles.subtitle}>{data?.bio}
                                 <a className={styles.threadsNet} target="_blank"
                                    href="https://www.threads.net/">threads.net</a>
                             </p>
-                            <p onClick={() => setModalFollow(true)} className={styles.followers}>{data?.number_of_followers}{
+                            <p onClick={(e) => {
+                                e.stopPropagation()
+                                e.preventDefault()
+                                setModalFollow(true)
+                                oneUserProfile(data?.username)
+                            }} className={styles.followers}>{data?.number_of_followers}{
                                 data?.number_of_followers < 1000 ? "" : "K"
                             } followers</p>
-                            <ModalListFollow modal={modalFollow} setModal={setModalFollow}/>
+                            <MainModalUserFollowers modal={modalFollow} setModal={setModalFollow}/>
                         </div>
                     </div>
                 </div>

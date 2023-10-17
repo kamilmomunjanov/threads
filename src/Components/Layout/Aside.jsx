@@ -44,7 +44,6 @@ const Aside = ({aside, setAside}) => {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
-        console.log(value)
         setSearchTerm(value);
         console.log(handleInput, "It is my handleInput")
     };
@@ -60,7 +59,6 @@ const Aside = ({aside, setAside}) => {
 
     const lowercaseSearchTerm = searchTerm.toLowerCase()
     const handleInput = data?.results?.filter((item) => item.username.toLowerCase().includes(lowercaseSearchTerm))
-    console.log(handleInput)
 
 
     const oneUserProfile = (username) => {

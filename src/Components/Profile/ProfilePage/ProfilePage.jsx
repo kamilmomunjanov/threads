@@ -19,6 +19,7 @@ import {followMe} from "../../../redux/reducers/followSlice";
 import {followYou} from "../../../redux/reducers/followYouSlice";
 import {profileUser} from "../../../redux/reducers/profileSlice";
 import {profileUsername} from "../../../redux/reducers/otherProfile";
+import {getQuoteThread} from "../../../redux/reducers/quoteSlice";
 
 
 const ProfilePage = ({modal, setModal}) => {
@@ -29,6 +30,7 @@ const ProfilePage = ({modal, setModal}) => {
     const {_data} = useSelector((store) => store.profileSlice)
     const {data} = useSelector((store) => store.followSlice)
     const {dataF} = useSelector((store) => store.followYouSlice)
+    const {_data:reposts} = useSelector((store) => store.repostSlice)
 
 
     useEffect(()=>{
@@ -46,16 +48,17 @@ const ProfilePage = ({modal, setModal}) => {
         dispatch(profileUsername())
     },[])
 
+
     return (
         <div className={styles.profilePage}>
             <Layout/>
             <div className={styles.loginPage__right}>
                     <div className={styles.info}>
                         <div className={styles.information}>
-                            <img style={{width:"150px",height:"150px",borderRadius:"50%"}} src={_data.photo} alt="Avatar"/>
+                            <img style={{width:"150px",height:"150px",borderRadius:"50%"}} src={_data?.photo} alt="Avatar"/>
                             <div className={styles.aboutUser}>
-                                <h2 className={styles.title}>{_data.bio}</h2>
-                                <p className={styles.subtitle}>{_data.username}
+                                <h2 className={styles.title}>{_data?.bio}</h2>
+                                <p className={styles.subtitle}>{_data?.username}
                                     <a className={styles.threadsNet} target="_blank"
                                        href="https://www.threads.net/">threads.net</a>
                                 </p>
