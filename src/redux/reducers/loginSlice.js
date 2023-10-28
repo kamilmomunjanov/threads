@@ -32,30 +32,6 @@ export const loginUser = createAsyncThunk(
 )
 
 
-export const googleUser = createAsyncThunk(
-    "login/googleUser",
-    async ({username, password}, {rejectWithValue}) => {
-        try {
-            const response = await instance.post("user/login/",{
-                username: username,
-                password: password,
-                remember_me: true,
-            })
-
-
-            console.log(response)
-            if (response.statusText !== "OK") {
-                throw new Error("Ошибка при запросе")
-            }
-
-            return  response.data
-
-        }catch (err) {
-            return rejectWithValue(err.message)
-        }
-    }
-)
-
 export const newPassword = createAsyncThunk(
     "login/newPassword",
     async ({password, passwordRepeat}, {rejectWithValue}) => {
@@ -78,6 +54,8 @@ export const newPassword = createAsyncThunk(
         }
     }
 )
+
+
 
 
 const signInSlice = createSlice({
